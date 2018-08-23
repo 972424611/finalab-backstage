@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cslg.finalab.dao.SysMemberMapper" >
+  <resultMap id="BaseResultMap" type="com.cslg.finalab.model.SysMember" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="college" property="college" jdbcType="INTEGER" />
+    <result column="majors" property="majors" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="department_id" property="departmentId" jdbcType="TINYINT" />
+    <result column="level_id" property="levelId" jdbcType="TINYINT" />
+    <result column="head_portrait" property="headPortrait" jdbcType="VARCHAR" />
+    <result column="catchphrase" property="catchphrase" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stu_id, name, grade, college, majors, class_name, gender, phone, qq, email, department_id, 
+    level_id, head_portrait, catchphrase
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_member
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_member
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cslg.finalab.model.SysMember" >
+    insert into sys_member (id, stu_id, name, 
+      grade, college, majors, 
+      class_name, gender, phone, 
+      qq, email, department_id, 
+      level_id, head_portrait, catchphrase
+      )
+    values (#{id,jdbcType=INTEGER}, #{stuId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{grade,jdbcType=INTEGER}, #{college,jdbcType=INTEGER}, #{majors,jdbcType=VARCHAR}, 
+      #{className,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, #{phone,jdbcType=VARCHAR}, 
+      #{qq,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{departmentId,jdbcType=TINYINT}, 
+      #{levelId,jdbcType=TINYINT}, #{headPortrait,jdbcType=VARCHAR}, #{catchphrase,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cslg.finalab.model.SysMember" >
+    insert into sys_member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="college != null" >
+        college,
+      </if>
+      <if test="majors != null" >
+        majors,
+      </if>
+      <if test="className != null" >
+        class_name,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="qq != null" >
+        qq,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="departmentId != null" >
+        department_id,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+      <if test="headPortrait != null" >
+        head_portrait,
+      </if>
+      <if test="catchphrase != null" >
+        catchphrase,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null" >
+        #{stuId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="college != null" >
+        #{college,jdbcType=INTEGER},
+      </if>
+      <if test="majors != null" >
+        #{majors,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=TINYINT},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=TINYINT},
+      </if>
+      <if test="headPortrait != null" >
+        #{headPortrait,jdbcType=VARCHAR},
+      </if>
+      <if test="catchphrase != null" >
+        #{catchphrase,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cslg.finalab.model.SysMember" >
+    update sys_member
+    <set >
+      <if test="stuId != null" >
+        stu_id = #{stuId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="college != null" >
+        college = #{college,jdbcType=INTEGER},
+      </if>
+      <if test="majors != null" >
+        majors = #{majors,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null" >
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null" >
+        department_id = #{departmentId,jdbcType=TINYINT},
+      </if>
+      <if test="levelId != null" >
+        level_id = #{levelId,jdbcType=TINYINT},
+      </if>
+      <if test="headPortrait != null" >
+        head_portrait = #{headPortrait,jdbcType=VARCHAR},
+      </if>
+      <if test="catchphrase != null" >
+        catchphrase = #{catchphrase,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cslg.finalab.model.SysMember" >
+    update sys_member
+    set stu_id = #{stuId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=INTEGER},
+      college = #{college,jdbcType=INTEGER},
+      majors = #{majors,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      phone = #{phone,jdbcType=VARCHAR},
+      qq = #{qq,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      department_id = #{departmentId,jdbcType=TINYINT},
+      level_id = #{levelId,jdbcType=TINYINT},
+      head_portrait = #{headPortrait,jdbcType=VARCHAR},
+      catchphrase = #{catchphrase,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- ======================= -->
+
+  <select id="selectByStuId" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_member WHERE stu_id = #{stuId}
+  </select>
+
+  <select id="selectByLevelId" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_member WHERE level_id = #{id}
+  </select>
+</mapper>

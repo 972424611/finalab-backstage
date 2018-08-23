@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cslg.finalab.dao.SysAchieveMapper" >
+  <resultMap id="BaseResultMap" type="com.cslg.finalab.model.SysAchieve" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="stu_id" property="stuId" jdbcType="VARCHAR" />
+    <result column="whereabouts" property="whereabouts" jdbcType="VARCHAR" />
+    <result column="catchphrase" property="catchphrase" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, stu_id, whereabouts, catchphrase
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_achieve
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_achieve
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cslg.finalab.model.SysAchieve" >
+    insert into sys_achieve (id, stu_id, whereabouts, 
+      catchphrase)
+    values (#{id,jdbcType=INTEGER}, #{stuId,jdbcType=VARCHAR}, #{whereabouts,jdbcType=VARCHAR}, 
+      #{catchphrase,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cslg.finalab.model.SysAchieve" >
+    insert into sys_achieve
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="whereabouts != null" >
+        whereabouts,
+      </if>
+      <if test="catchphrase != null" >
+        catchphrase,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null" >
+        #{stuId,jdbcType=VARCHAR},
+      </if>
+      <if test="whereabouts != null" >
+        #{whereabouts,jdbcType=VARCHAR},
+      </if>
+      <if test="catchphrase != null" >
+        #{catchphrase,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cslg.finalab.model.SysAchieve" >
+    update sys_achieve
+    <set >
+      <if test="stuId != null" >
+        stu_id = #{stuId,jdbcType=VARCHAR},
+      </if>
+      <if test="whereabouts != null" >
+        whereabouts = #{whereabouts,jdbcType=VARCHAR},
+      </if>
+      <if test="catchphrase != null" >
+        catchphrase = #{catchphrase,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cslg.finalab.model.SysAchieve" >
+    update sys_achieve
+    set stu_id = #{stuId,jdbcType=VARCHAR},
+      whereabouts = #{whereabouts,jdbcType=VARCHAR},
+      catchphrase = #{catchphrase,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- ==================== -->
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_achieve
+  </select>
+</mapper>
