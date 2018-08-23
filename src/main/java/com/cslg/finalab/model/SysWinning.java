@@ -7,11 +7,11 @@ public class SysWinning {
 
     private String name;
 
-    private String rating;
+    private String awardName;
+
+    private String awardLevel;
 
     private String awardImage;
-
-    private String activityImage;
 
     private Date time;
 
@@ -35,12 +35,20 @@ public class SysWinning {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getRating() {
-        return rating;
+    public String getAwardName() {
+        return awardName;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating == null ? null : rating.trim();
+    public void setAwardName(String awardName) {
+        this.awardName = awardName == null ? null : awardName.trim();
+    }
+
+    public String getAwardLevel() {
+        return awardLevel;
+    }
+
+    public void setAwardLevel(String awardLevel) {
+        this.awardLevel = awardLevel == null ? null : awardLevel.trim();
     }
 
     public String getAwardImage() {
@@ -49,14 +57,6 @@ public class SysWinning {
 
     public void setAwardImage(String awardImage) {
         this.awardImage = awardImage == null ? null : awardImage.trim();
-    }
-
-    public String getActivityImage() {
-        return activityImage;
-    }
-
-    public void setActivityImage(String activityImage) {
-        this.activityImage = activityImage == null ? null : activityImage.trim();
     }
 
     public Date getTime() {

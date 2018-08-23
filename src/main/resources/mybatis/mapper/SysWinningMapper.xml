@@ -4,15 +4,15 @@
   <resultMap id="BaseResultMap" type="com.cslg.finalab.model.SysWinning" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="rating" property="rating" jdbcType="VARCHAR" />
+    <result column="award_name" property="awardName" jdbcType="VARCHAR" />
+    <result column="award_level" property="awardLevel" jdbcType="VARCHAR" />
     <result column="award_image" property="awardImage" jdbcType="VARCHAR" />
-    <result column="activity_image" property="activityImage" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
     <result column="members" property="members" jdbcType="VARCHAR" />
     <result column="profile" property="profile" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, rating, award_image, activity_image, time, members, profile
+    id, name, award_name, award_level, award_image, time, members, profile
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,11 +25,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cslg.finalab.model.SysWinning" >
-    insert into sys_winning (id, name, rating, 
-      award_image, activity_image, time, 
+    insert into sys_winning (id, name, award_name, 
+      award_level, award_image, time, 
       members, profile)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{rating,jdbcType=VARCHAR}, 
-      #{awardImage,jdbcType=VARCHAR}, #{activityImage,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{awardName,jdbcType=VARCHAR}, 
+      #{awardLevel,jdbcType=VARCHAR}, #{awardImage,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, 
       #{members,jdbcType=VARCHAR}, #{profile,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cslg.finalab.model.SysWinning" >
@@ -41,14 +41,14 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="rating != null" >
-        rating,
+      <if test="awardName != null" >
+        award_name,
+      </if>
+      <if test="awardLevel != null" >
+        award_level,
       </if>
       <if test="awardImage != null" >
         award_image,
-      </if>
-      <if test="activityImage != null" >
-        activity_image,
       </if>
       <if test="time != null" >
         time,
@@ -67,14 +67,14 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="rating != null" >
-        #{rating,jdbcType=VARCHAR},
+      <if test="awardName != null" >
+        #{awardName,jdbcType=VARCHAR},
+      </if>
+      <if test="awardLevel != null" >
+        #{awardLevel,jdbcType=VARCHAR},
       </if>
       <if test="awardImage != null" >
         #{awardImage,jdbcType=VARCHAR},
-      </if>
-      <if test="activityImage != null" >
-        #{activityImage,jdbcType=VARCHAR},
       </if>
       <if test="time != null" >
         #{time,jdbcType=TIMESTAMP},
@@ -93,14 +93,14 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="rating != null" >
-        rating = #{rating,jdbcType=VARCHAR},
+      <if test="awardName != null" >
+        award_name = #{awardName,jdbcType=VARCHAR},
+      </if>
+      <if test="awardLevel != null" >
+        award_level = #{awardLevel,jdbcType=VARCHAR},
       </if>
       <if test="awardImage != null" >
         award_image = #{awardImage,jdbcType=VARCHAR},
-      </if>
-      <if test="activityImage != null" >
-        activity_image = #{activityImage,jdbcType=VARCHAR},
       </if>
       <if test="time != null" >
         time = #{time,jdbcType=TIMESTAMP},
@@ -117,12 +117,19 @@
   <update id="updateByPrimaryKey" parameterType="com.cslg.finalab.model.SysWinning" >
     update sys_winning
     set name = #{name,jdbcType=VARCHAR},
-      rating = #{rating,jdbcType=VARCHAR},
+      award_name = #{awardName,jdbcType=VARCHAR},
+      award_level = #{awardLevel,jdbcType=VARCHAR},
       award_image = #{awardImage,jdbcType=VARCHAR},
-      activity_image = #{activityImage,jdbcType=VARCHAR},
       time = #{time,jdbcType=TIMESTAMP},
       members = #{members,jdbcType=VARCHAR},
       profile = #{profile,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- ==================== -->
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_winning
+  </select>
 </mapper>
