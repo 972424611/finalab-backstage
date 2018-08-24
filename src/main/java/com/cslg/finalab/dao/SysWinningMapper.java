@@ -22,4 +22,5 @@ public interface SysWinningMapper {
     // -------------------------------
 
     List<SysWinning> selectAll();
+
 }

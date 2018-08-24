@@ -6,7 +6,6 @@ import com.cslg.finalab.model.SysLevel;
 import com.cslg.finalab.model.SysMember;
 import com.cslg.finalab.service.SysMemberService;
 import com.cslg.finalab.vo.CouncilVo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

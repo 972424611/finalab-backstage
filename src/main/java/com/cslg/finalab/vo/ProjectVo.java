@@ -9,5 +9,5 @@ public class ProjectVo {
 
     private String category;
 
-    private String image;
+    private String coverImage;
 }

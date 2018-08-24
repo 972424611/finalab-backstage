@@ -5,10 +5,13 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="VARCHAR" />
-    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="members" property="members" jdbcType="VARCHAR" />
+    <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+    <result column="cover_image" property="coverImage" jdbcType="VARCHAR" />
+    <result column="images" property="images" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, category, image
+    id, name, category, members, introduction, cover_image, images
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -22,9 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.cslg.finalab.model.SysProject" >
     insert into sys_project (id, name, category, 
-      image)
+      members, introduction, cover_image, 
+      images)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
-      #{image,jdbcType=VARCHAR})
+      #{members,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{coverImage,jdbcType=VARCHAR}, 
+      #{images,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cslg.finalab.model.SysProject" >
     insert into sys_project
@@ -38,8 +43,17 @@
       <if test="category != null" >
         category,
       </if>
-      <if test="image != null" >
-        image,
+      <if test="members != null" >
+        members,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="coverImage != null" >
+        cover_image,
+      </if>
+      <if test="images != null" >
+        images,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -52,8 +66,17 @@
       <if test="category != null" >
         #{category,jdbcType=VARCHAR},
       </if>
-      <if test="image != null" >
-        #{image,jdbcType=VARCHAR},
+      <if test="members != null" >
+        #{members,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImage != null" >
+        #{coverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null" >
+        #{images,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -66,8 +89,17 @@
       <if test="category != null" >
         category = #{category,jdbcType=VARCHAR},
       </if>
-      <if test="image != null" >
-        image = #{image,jdbcType=VARCHAR},
+      <if test="members != null" >
+        members = #{members,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImage != null" >
+        cover_image = #{coverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null" >
+        images = #{images,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -76,7 +108,10 @@
     update sys_project
     set name = #{name,jdbcType=VARCHAR},
       category = #{category,jdbcType=VARCHAR},
-      image = #{image,jdbcType=VARCHAR}
+      members = #{members,jdbcType=VARCHAR},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      cover_image = #{coverImage,jdbcType=VARCHAR},
+      images = #{images,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -86,6 +121,4 @@
     SELECT <include refid="Base_Column_List"/>
     FROM sys_project
   </select>
-
-
 </mapper>

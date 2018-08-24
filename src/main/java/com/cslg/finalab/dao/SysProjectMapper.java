@@ -22,6 +22,4 @@ public interface SysProjectMapper {
     // -------------------------------
 
     List<SysProject> selectAll();
-
-
 }
