@@ -1,7 +1,6 @@
 package com.cslg.finalab.service.impl;
 
 import com.cslg.finalab.dao.SysProjectMapper;
-import com.cslg.finalab.model.SysProject;
 import com.cslg.finalab.service.SysProjectService;
 import com.cslg.finalab.vo.ProjectVo;
 import org.springframework.beans.BeanUtils;

@@ -3,6 +3,7 @@
 <mapper namespace="com.cslg.finalab.dao.SysProjectMapper" >
   <resultMap id="BaseResultMap" type="com.cslg.finalab.model.SysProject" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="VARCHAR" />
     <result column="members" property="members" jdbcType="VARCHAR" />
@@ -11,7 +12,7 @@
     <result column="images" property="images" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, category, members, introduction, cover_image, images
+    id, number, name, category, members, introduction, cover_image, images
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,18 +25,21 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cslg.finalab.model.SysProject" >
-    insert into sys_project (id, name, category, 
-      members, introduction, cover_image, 
-      images)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
-      #{members,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{coverImage,jdbcType=VARCHAR}, 
-      #{images,jdbcType=VARCHAR})
+    insert into sys_project (id, number, name, 
+      category, members, introduction, 
+      cover_image, images)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{category,jdbcType=VARCHAR}, #{members,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
+      #{coverImage,jdbcType=VARCHAR}, #{images,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cslg.finalab.model.SysProject" >
     insert into sys_project
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="number != null" >
+        number,
       </if>
       <if test="name != null" >
         name,
@@ -60,6 +64,9 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
@@ -83,6 +90,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.cslg.finalab.model.SysProject" >
     update sys_project
     <set >
+      <if test="number != null" >
+        number = #{number,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -106,7 +116,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cslg.finalab.model.SysProject" >
     update sys_project
-    set name = #{name,jdbcType=VARCHAR},
+    set number = #{number,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       category = #{category,jdbcType=VARCHAR},
       members = #{members,jdbcType=VARCHAR},
       introduction = #{introduction,jdbcType=VARCHAR},
@@ -114,11 +125,4 @@
       images = #{images,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-  <!-- ==================== -->
-
-  <select id="selectAll" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"/>
-    FROM sys_project
-  </select>
 </mapper>
