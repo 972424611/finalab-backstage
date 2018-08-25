@@ -11,11 +11,7 @@ public class SysProject {
 
     private String members;
 
-    private String introduction;
-
     private String coverImage;
-
-    private String images;
 
     public Integer getId() {
         return id;
@@ -57,27 +53,11 @@ public class SysProject {
         this.members = members == null ? null : members.trim();
     }
 
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction == null ? null : introduction.trim();
-    }
-
     public String getCoverImage() {
         return coverImage;
     }
 
     public void setCoverImage(String coverImage) {
         this.coverImage = coverImage == null ? null : coverImage.trim();
-    }
-
-    public String getImages() {
-        return images;
-    }
-
-    public void setImages(String images) {
-        this.images = images == null ? null : images.trim();
     }
 }

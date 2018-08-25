@@ -2,6 +2,8 @@ package com.cslg.finalab.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ProjectVo {
 
@@ -9,11 +11,11 @@ public class ProjectVo {
 
     private String category;
 
-    private String members;
+    private List<String> memberList;
 
     private String introduction;
 
     private String coverImage;
 
-    private String images;
+    private List<String> imageList;
 }
