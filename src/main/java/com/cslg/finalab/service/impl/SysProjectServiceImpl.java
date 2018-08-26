@@ -32,7 +32,9 @@ public class SysProjectServiceImpl implements SysProjectService {
             projectVo.setName(sysProjectWithBLOBs.getName());
             projectVo.setCategory(sysProjectWithBLOBs.getCategory());
             projectVo.setIntroduction(sysProjectWithBLOBs.getIntroduction());
-            projectVo.setCoverImage(serverAddress + sysProjectWithBLOBs.getCoverImage());
+            if(StringUtils.isNotBlank(sysProjectWithBLOBs.getCoverImage())) {
+                projectVo.setCoverImage(serverAddress + sysProjectWithBLOBs.getCoverImage());
+            }
             String members = sysProjectWithBLOBs.getMembers();
             List<String> memberList = null;
             if(StringUtils.isNotBlank(members)) {
