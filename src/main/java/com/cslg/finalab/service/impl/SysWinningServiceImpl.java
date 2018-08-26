@@ -26,6 +26,7 @@ public class SysWinningServiceImpl implements SysWinningService {
         List<SysWinning> sysWinningList = sysWinningMapper.selectAll();
         List<WinningVo> winningVoList = new ArrayList<>();
         for(SysWinning sysWinning : sysWinningList) {
+
             WinningVo winningVo = new WinningVo();
             BeanUtils.copyProperties(sysWinning, winningVo, "award_image");
             winningVo.setAwardImage(serverAddress + sysWinning.getAwardImage());
