@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,6 +41,10 @@ public class SysAchieveServiceImpl implements SysAchieveService {
             achieveVo.setHeadPortrait(serverAddress + sysMember.getHeadPortrait());
             achieveVo.setName(sysMember.getName());
             achieveVoList.add(achieveVo);
+        }
+        // 随机排序
+        if(achieveVoList.size() > 1) {
+            Collections.shuffle(achieveVoList);
         }
         return achieveVoList;
     }

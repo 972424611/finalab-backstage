@@ -1,7 +1,6 @@
 package com.cslg.finalab.service.impl;
 
 import com.cslg.finalab.dao.SysProjectMapper;
-import com.cslg.finalab.model.SysProject;
 import com.cslg.finalab.model.SysProjectWithBLOBs;
 import com.cslg.finalab.service.SysProjectService;
 import com.cslg.finalab.vo.ProjectVo;
@@ -10,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SysProjectServiceImpl implements SysProjectService {
@@ -51,6 +48,10 @@ public class SysProjectServiceImpl implements SysProjectService {
             }
             projectVo.setImageList(imageList);
             projectVoList.add(projectVo);
+        }
+        // 随机排序
+        if(projectVoList.size() > 1) {
+            Collections.shuffle(projectVoList);
         }
         return projectVoList;
     }
