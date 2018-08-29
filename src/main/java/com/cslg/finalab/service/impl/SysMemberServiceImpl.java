@@ -42,8 +42,10 @@ public class SysMemberServiceImpl implements SysMemberService {
                 councilVoList.add(councilVo);
             }
         }
-        //把实验室导师放中间位置(一共只有三个３)
-        Collections.swap(councilVoList, 1, 2);
+        if(councilVoList.size() > 1) {
+            //把实验室导师放中间位置(一共只有三个３)
+            Collections.swap(councilVoList, 1, 2);
+        }
         return councilVoList;
     }
 }

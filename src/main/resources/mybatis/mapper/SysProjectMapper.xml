@@ -148,4 +148,6 @@
     SELECT <include refid="Base_Column_List"/>, <include refid="Blob_Column_List"/>
     FROM sys_project
   </select>
+
+
 </mapper>
