@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,12 +25,20 @@ public class SysMemoryServiceImpl implements SysMemoryService {
     @Override
     public List<MemoryVo> getMemoryByRandom() {
         List<SysMemory> sysMemoryList = sysMemoryMapper.selectAll();
+        // 随机排序
+        if(sysMemoryList.size() > 1) {
+            Collections.shuffle(sysMemoryList);
+        }
         List<MemoryVo> memoryVoList = new ArrayList<>();
         for(SysMemory sysMemory : sysMemoryList) {
             MemoryVo memoryVo = new MemoryVo();
             BeanUtils.copyProperties(sysMemory, memoryVo);
             memoryVo.setPhoto(serverAddress + sysMemory.getPhoto());
             memoryVoList.add(memoryVo);
+            // 每次只展示11张图片
+            if(memoryVoList.size() >= 10) {
+                break;
+            }
         }
         return memoryVoList;
     }
