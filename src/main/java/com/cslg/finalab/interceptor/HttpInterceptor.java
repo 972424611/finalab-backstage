@@ -15,12 +15,12 @@ public class HttpInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String originHeader = request.getHeader("Origin");
+        /*String originHeader = request.getHeader("Origin");
         if(Arrays.asList(ALLOW_DOMAIN).contains(originHeader)) {
             // 允许跨域
             response.setHeader("Access-Control-Allow-Origin", originHeader);
-        }
-
+        }*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
         // 允许自定义请求头token(允许head跨域)
         //response.setHeader("Access-Control-Allow-Headers", "token, Accept, Origin, X-Requested-With, Content-Type, Last-Modified");
         return true;
