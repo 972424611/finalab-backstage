@@ -16,11 +16,11 @@ public class BeanValidator {
 
     private static ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 
-    public static <T> Map<String, String> validate(T t, Class... groups) {
+    public static <T> LinkedHashMap validate(T t, Class... groups) {
         Validator validator = validatorFactory.getValidator();
         Set validateResult = validator.validate(t, groups);
         if(validateResult.isEmpty()) {
-            return Collections.emptyMap();
+            return (LinkedHashMap) Collections.emptyMap();
         }else {
             LinkedHashMap errors = Maps.newLinkedHashMap();
             for (Object aValidateResult : validateResult) {
@@ -31,7 +31,7 @@ public class BeanValidator {
         }
     }
 
-    public static Map<String, String> validateList(Collection<?> collection) {
+    public static Map validateList(Collection<?> collection) {
         Preconditions.checkNotNull(collection);
         Iterator iterator = collection.iterator();
         Map errors;
@@ -40,21 +40,21 @@ public class BeanValidator {
                 return Collections.emptyMap();
             }
             Object object = iterator.next();
-            errors = validate(object, new Class[0]);
+            errors = validate(object);
         }while(errors.isEmpty());
         return errors;
     }
 
-    public static Map<String, String> validateObject(Object first, Object... objects) {
+    public static Map validateObject(Object first, Object... objects) {
         if(objects != null && objects.length > 0) {
             return validateList(Lists.asList(first, objects));
         }else {
-            return validate(first, new Class[0]);
+            return validate(first);
         }
     }
 
     public static void check(Object param) throws CustomException {
-        Map<String, String> map = BeanValidator.validateObject(param);
+        Map map = BeanValidator.validateObject(param);
         if(MapUtils.isNotEmpty(map)) {
             throw new CustomException(map.toString());
         }

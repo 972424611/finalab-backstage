@@ -1,5 +1,6 @@
 package com.cslg.finalab.common;
 
+import com.alibaba.fastjson.JSON;
 import com.cslg.finalab.exception.CustomException;
 import com.cslg.finalab.utils.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +36,7 @@ public class SpringExceptionResolver implements HandlerExceptionResolver {
         try {
             httpServletResponse.setContentType("application/json;charset=UTF-8");
             writer = httpServletResponse.getWriter();
-            String msg = JsonUtil.objectToJson(jsonData);
+            String msg = JSON.toJSONString(jsonData);
             if(StringUtils.isNotBlank(msg)) {
                 writer.write(msg);
                 writer.flush();
