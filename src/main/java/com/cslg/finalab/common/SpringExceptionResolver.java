@@ -26,10 +26,11 @@ public class SpringExceptionResolver implements HandlerExceptionResolver {
         String defaultMsg = "System error";
         JsonData jsonData;
         if(exception instanceof CustomException) {
-            jsonData = JsonData.fail(exception.getMessage());
+            jsonData = JsonData.fail(exception.getMessage(), ((CustomException) exception).getCode());
             LOGGER.error("自定义异常, url: {}", url, exception.getMessage());
         } else {
-            jsonData = JsonData.fail(defaultMsg);
+            // 系统异常自定义返回code为500
+            jsonData = JsonData.fail(defaultMsg, 500);
             LOGGER.error("系统异常, url: {}", url, exception.getMessage());
         }
         PrintWriter writer = null;

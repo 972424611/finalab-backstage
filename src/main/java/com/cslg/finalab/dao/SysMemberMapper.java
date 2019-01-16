@@ -25,4 +25,8 @@ public interface SysMemberMapper {
     SysMember selectByStuId(String stuId);
 
     List<SysMember> selectByLevelId(Integer id);
+
+    List<SysMember> selectByDepartmentId(Integer departmentId);
+
+    int countMemberByStuId(String stuId);
 }

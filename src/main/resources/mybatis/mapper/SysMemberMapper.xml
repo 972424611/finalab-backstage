@@ -221,4 +221,13 @@
     SELECT <include refid="Base_Column_List"/>
     FROM sys_member WHERE level_id = #{id}
   </select>
+
+  <select id="selectByDepartmentId" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_member WHERE department_id = #{departmentId}
+  </select>
+
+  <select id="countMemberByStuId" resultType="Integer">
+    SELECT COUNT(id) FROM sys_member WHERE stu_id = #{stuId}
+  </select>
 </mapper>

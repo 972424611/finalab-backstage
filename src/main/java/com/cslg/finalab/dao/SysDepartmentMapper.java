@@ -16,4 +16,8 @@ public interface SysDepartmentMapper {
     int updateByPrimaryKeySelective(SysDepartment record);
 
     int updateByPrimaryKey(SysDepartment record);
+
+    // ===================================
+
+    SysDepartment selectByDepartMentName(String department);
 }

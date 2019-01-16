@@ -55,4 +55,11 @@
     set name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- ========================= -->
+  <select id="selectByDepartMentName" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM sys_department WHERE name = #{department}
+  </select>
 </mapper>

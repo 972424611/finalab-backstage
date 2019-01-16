@@ -20,8 +20,8 @@ public class BeanValidator {
         Validator validator = validatorFactory.getValidator();
         Set validateResult = validator.validate(t, groups);
         if(validateResult.isEmpty()) {
-            return (LinkedHashMap) Collections.emptyMap();
-        }else {
+            return new LinkedHashMap();
+        } else {
             LinkedHashMap errors = Maps.newLinkedHashMap();
             for (Object aValidateResult : validateResult) {
                 ConstraintViolation violation = (ConstraintViolation) aValidateResult;
@@ -48,7 +48,7 @@ public class BeanValidator {
     public static Map validateObject(Object first, Object... objects) {
         if(objects != null && objects.length > 0) {
             return validateList(Lists.asList(first, objects));
-        }else {
+        } else {
             return validate(first);
         }
     }

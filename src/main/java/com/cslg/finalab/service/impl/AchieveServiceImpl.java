@@ -4,7 +4,7 @@ import com.cslg.finalab.dao.SysAchieveMapper;
 import com.cslg.finalab.dao.SysMemberMapper;
 import com.cslg.finalab.model.SysAchieve;
 import com.cslg.finalab.model.SysMember;
-import com.cslg.finalab.service.SysAchieveService;
+import com.cslg.finalab.service.AchieveService;
 import com.cslg.finalab.vo.AchieveVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author twilight
  */
 @Service
-public class SysAchieveServiceImpl implements SysAchieveService {
+public class AchieveServiceImpl implements AchieveService {
 
     @Value("${server_address}")
     private String serverAddress;

@@ -1,6 +1,10 @@
 package com.cslg.finalab.model;
 
+import lombok.Data;
+
+@Data
 public class SysLevel {
+
     private Integer id;
 
     private String name;
@@ -9,15 +13,4 @@ public class SysLevel {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
 }

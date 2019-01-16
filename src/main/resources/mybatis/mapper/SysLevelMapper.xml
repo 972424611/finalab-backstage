@@ -57,8 +57,16 @@
   </update>
 
   <!-- ======================= -->
+
   <select id="selectAll" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"/>
+    SELECT
+    <include refid="Base_Column_List"/>
     FROM sys_level
+  </select>
+
+  <select id="selectByLevelName" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sys_level WHERE name = #{levelName}
   </select>
 </mapper>

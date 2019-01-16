@@ -1,5 +1,8 @@
 package com.cslg.finalab.model;
 
+import lombok.Data;
+
+@Data
 public class SysAchieve {
 
     private Integer id;
@@ -20,25 +23,5 @@ public class SysAchieve {
 
     public String getStuId() {
         return stuId;
-    }
-
-    public void setStuId(String stuId) {
-        this.stuId = stuId == null ? null : stuId.trim();
-    }
-
-    public String getWhereabouts() {
-        return whereabouts;
-    }
-
-    public void setWhereabouts(String whereabouts) {
-        this.whereabouts = whereabouts == null ? null : whereabouts.trim();
-    }
-
-    public String getCatchphrase() {
-        return catchphrase;
-    }
-
-    public void setCatchphrase(String catchphrase) {
-        this.catchphrase = catchphrase == null ? null : catchphrase.trim();
     }
 }

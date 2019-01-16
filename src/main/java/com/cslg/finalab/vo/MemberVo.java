@@ -17,7 +17,7 @@ public class MemberVo {
 
     private int grade;
 
-    private int college;
+    private String college;
 
     private String majors;
 

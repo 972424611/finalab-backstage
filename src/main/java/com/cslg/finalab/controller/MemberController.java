@@ -1,19 +1,21 @@
 package com.cslg.finalab.controller;
 
 import com.cslg.finalab.common.JsonData;
-import com.cslg.finalab.service.SysMemberService;
+import com.cslg.finalab.param.MemberParam;
+import com.cslg.finalab.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/sys/member")
-public class SysMemberController {
+public class MemberController {
 
     @Autowired
-    private SysMemberService sysMemberService;
+    private MemberService memberService;
 
     /**
      * 获取理事会成员的信息
@@ -22,7 +24,7 @@ public class SysMemberController {
     @ResponseBody
     @RequestMapping(value = "/getCouncil")
     public JsonData getCouncil() {
-        return JsonData.success(sysMemberService.getCouncilList());
+        return JsonData.success(memberService.getCouncilList());
     }
 
     /**
@@ -32,9 +34,14 @@ public class SysMemberController {
      */
     @ResponseBody
     @RequestMapping(value = "/getMembers")
-    public JsonData getMembers(@RequestParam(value = "id") String departmentId) {
-        return JsonData.success(sysMemberService.getMemberListByDepartmentId(departmentId));
+    public JsonData getMembers(@RequestParam(value = "id") Integer departmentId) {
+        return JsonData.success(memberService.getMemberListByDepartmentId(departmentId));
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/addMember")
+    public JsonData addMember(MemberParam memberParam) {
+        memberService.saveMember(memberParam);
+        return JsonData.success();
+    }
 }

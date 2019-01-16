@@ -1,5 +1,8 @@
 package com.cslg.finalab.model;
 
+import lombok.Data;
+
+@Data
 public class SysCollege {
     private Integer id;
 
@@ -13,11 +16,4 @@ public class SysCollege {
         this.id = id;
     }
 
-    public String getCollegeName() {
-        return collegeName;
-    }
-
-    public void setCollegeName(String collegeName) {
-        this.collegeName = collegeName == null ? null : collegeName.trim();
-    }
 }

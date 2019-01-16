@@ -22,4 +22,6 @@ public interface SysLevelMapper {
     // -------------------------------
 
     List<SysLevel> selectAll();
+
+    SysLevel selectByLevelName(String level);
 }

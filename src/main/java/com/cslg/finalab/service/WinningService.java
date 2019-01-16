@@ -4,7 +4,7 @@ import com.cslg.finalab.vo.WinningVo;
 
 import java.util.List;
 
-public interface SysWinningService {
+public interface WinningService {
 
     List<WinningVo> getAllWinningList();
 }

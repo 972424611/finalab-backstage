@@ -2,7 +2,7 @@ package com.cslg.finalab.service.impl;
 
 import com.cslg.finalab.dao.SysProjectMapper;
 import com.cslg.finalab.model.SysProjectWithBLOBs;
-import com.cslg.finalab.service.SysProjectService;
+import com.cslg.finalab.service.ProjectService;
 import com.cslg.finalab.vo.ProjectDetailVo;
 import com.cslg.finalab.vo.ProjectVo;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class SysProjectServiceImpl implements SysProjectService {
+public class ProjectServiceImpl implements ProjectService {
 
     @Value("${server_address}")
     private String serverAddress;

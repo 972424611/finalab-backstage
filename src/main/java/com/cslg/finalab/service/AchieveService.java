@@ -4,7 +4,7 @@ import com.cslg.finalab.vo.AchieveVo;
 
 import java.util.List;
 
-public interface SysAchieveService {
+public interface AchieveService {
 
     List<AchieveVo> getAllAchieveList();
 }

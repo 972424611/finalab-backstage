@@ -5,7 +5,7 @@ import com.cslg.finalab.vo.ProjectVo;
 
 import java.util.List;
 
-public interface SysProjectService {
+public interface ProjectService {
 
     /**
      * 使用Set展示项目的时候顺序就有随机性

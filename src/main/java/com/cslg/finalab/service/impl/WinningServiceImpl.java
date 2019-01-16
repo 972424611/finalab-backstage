@@ -2,7 +2,7 @@ package com.cslg.finalab.service.impl;
 
 import com.cslg.finalab.dao.SysWinningMapper;
 import com.cslg.finalab.model.SysWinning;
-import com.cslg.finalab.service.SysWinningService;
+import com.cslg.finalab.service.WinningService;
 import com.cslg.finalab.vo.WinningVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class SysWinningServiceImpl implements SysWinningService {
+public class WinningServiceImpl implements WinningService {
 
     @Value("${server_address}")
     private String serverAddress;

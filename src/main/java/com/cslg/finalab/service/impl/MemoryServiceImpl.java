@@ -2,7 +2,7 @@ package com.cslg.finalab.service.impl;
 
 import com.cslg.finalab.dao.SysMemoryMapper;
 import com.cslg.finalab.model.SysMemory;
-import com.cslg.finalab.service.SysMemoryService;
+import com.cslg.finalab.service.MemoryService;
 import com.cslg.finalab.vo.MemoryVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class SysMemoryServiceImpl implements SysMemoryService {
+public class MemoryServiceImpl implements MemoryService {
 
     @Value("${server_address}")
     private String serverAddress;
