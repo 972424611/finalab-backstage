@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/sys/member")
 public class MemberController {
@@ -38,10 +40,22 @@ public class MemberController {
         return JsonData.success(memberService.getMemberListByDepartmentId(departmentId));
     }
 
+    /**
+     * 添加部门成员
+     * @param memberParam 请求body数据
+     * @return JsonData
+     */
     @ResponseBody
     @RequestMapping(value = "/addMember")
     public JsonData addMember(MemberParam memberParam) {
         memberService.saveMember(memberParam);
+        return JsonData.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteMember")
+    public JsonData deleteMember(@RequestParam(value = "ids") Integer[] memberIds) {
+        memberService.deleteMemberById(memberIds);
         return JsonData.success();
     }
 }

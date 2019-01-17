@@ -23,7 +23,13 @@ public interface MemberService {
 
     /**
      * 保存成员
-     * @param memberParam memberParam
+     * @param memberParam 请求body
      */
     void saveMember(MemberParam memberParam);
+
+    /**
+     * 根据成员id，删除成员
+     * @param memberIds 成员ids
+     */
+    void deleteMemberById(Integer[] memberIds);
 }

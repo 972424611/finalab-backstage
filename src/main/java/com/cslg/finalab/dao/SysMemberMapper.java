@@ -2,6 +2,7 @@ package com.cslg.finalab.dao;
 
 import com.cslg.finalab.model.SysMember;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -29,4 +30,6 @@ public interface SysMemberMapper {
     List<SysMember> selectByDepartmentId(Integer departmentId);
 
     int countMemberByStuId(String stuId);
+
+    void batchDeleteByPrimaryKey(@Param("memberIds") Integer[] memberIds);
 }

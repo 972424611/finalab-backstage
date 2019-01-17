@@ -230,4 +230,11 @@
   <select id="countMemberByStuId" resultType="Integer">
     SELECT COUNT(id) FROM sys_member WHERE stu_id = #{stuId}
   </select>
+
+  <delete id="batchDeleteByPrimaryKey" parameterType="Integer">
+    DELETE FROM sys_member WHERE id IN
+    <foreach collection="memberIds" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
 </mapper>

@@ -119,4 +119,12 @@ public class MemberServiceImpl implements MemberService {
         // TODO 照片还未处理
         sysMemberMapper.insert(sysMember);
     }
+
+    @Override
+    public void deleteMemberById(Integer[] memberIds) {
+        if(memberIds.length == 0) {
+            return;
+        }
+        sysMemberMapper.batchDeleteByPrimaryKey(memberIds);
+    }
 }
