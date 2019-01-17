@@ -52,6 +52,11 @@ public class MemberController {
         return JsonData.success();
     }
 
+    /**
+     * 根据id，删除成员
+     * @param memberIds 成员id数组
+     * @return JsonData
+     */
     @ResponseBody
     @RequestMapping(value = "/deleteMember")
     public JsonData deleteMember(@RequestParam(value = "ids") Integer[] memberIds) {
