@@ -13,6 +13,7 @@ public class MemoryController {
 
     @Autowired
     private MemoryService memoryService;
+
     @ResponseBody
     @RequestMapping(value = "/random")
     public JsonData random() {

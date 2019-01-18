@@ -63,4 +63,11 @@ public class MemberController {
         memberService.deleteMemberById(memberIds);
         return JsonData.success();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateMember")
+    public JsonData updateMember(MemberParam memberParam) {
+        memberService.updateMemberById(memberParam);
+        return JsonData.success();
+    }
 }

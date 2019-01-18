@@ -32,4 +32,10 @@ public interface MemberService {
      * @param memberIds 成员ids
      */
     void deleteMemberById(Integer[] memberIds);
+
+    /**
+     * 更新成员，只更新不为null的属性。
+     * @param memberParam 对象中只包含用户改变的属性
+     */
+    void updateMemberById(MemberParam memberParam);
 }

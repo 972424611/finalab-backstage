@@ -127,4 +127,34 @@ public class MemberServiceImpl implements MemberService {
         }
         sysMemberMapper.batchDeleteByPrimaryKey(memberIds);
     }
+
+    @Override
+    public void updateMemberById(MemberParam memberParam) {
+        SysMember sysMember = new SysMember();
+        sysMember.setId(memberParam.getId());
+        if(memberParam.getStuId() != null) {
+            // 检查学号是否重复
+            String stuId = memberParam.getStuId();
+            if(sysMemberMapper.countMemberByStuId(stuId) > 0) {
+                throw new MemberException(MemberEnum.MEMBER_ALREADY_EXISTS);
+            }
+            sysMember.setStuId(memberParam.getStuId());
+        }
+        if(memberParam.getCollege() != null) {
+            // 查询学院
+            SysCollege sysCollege = sysCollegeMapper.selectByCollegeName(memberParam.getCollege());
+            sysMember.setCollege(sysCollege.getId());
+        }
+        if(memberParam.getDepartment() != null) {
+            // 查询部门
+            SysDepartment department = sysDepartmentMapper.selectByDepartMentName(memberParam.getDepartment());
+            sysMember.setDepartmentId(department.getId());
+        }
+        if(memberParam.getLevel() != null) {
+            // 查询成员级别
+            SysLevel sysLevel = sysLevelMapper.selectByLevelName(memberParam.getLevel());
+            sysMember.setLevelId(sysLevel.getId());
+        }
+    }
+
 }

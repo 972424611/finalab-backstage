@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 @Data
 public class MemberParam {
 
+    public Integer id;
+
     @NotBlank(message = "学号不能为空")
     public String stuId;
 
