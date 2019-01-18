@@ -132,7 +132,8 @@ public class MemberServiceImpl implements MemberService {
     public void updateMemberById(MemberParam memberParam) {
         SysMember sysMember = new SysMember();
         sysMember.setId(memberParam.getId());
-        if(memberParam.getStuId() != null) {
+        BeanUtils.copyProperties(memberParam, sysMember);
+        if(StringUtils.isNotBlank(memberParam.getStuId())) {
             // 检查学号是否重复
             String stuId = memberParam.getStuId();
             if(sysMemberMapper.countMemberByStuId(stuId) > 0) {
@@ -140,21 +141,25 @@ public class MemberServiceImpl implements MemberService {
             }
             sysMember.setStuId(memberParam.getStuId());
         }
-        if(memberParam.getCollege() != null) {
+        if(StringUtils.isNotBlank(memberParam.getCollege())) {
             // 查询学院
             SysCollege sysCollege = sysCollegeMapper.selectByCollegeName(memberParam.getCollege());
             sysMember.setCollege(sysCollege.getId());
         }
-        if(memberParam.getDepartment() != null) {
+        if(StringUtils.isNotBlank(memberParam.getDepartment())) {
             // 查询部门
             SysDepartment department = sysDepartmentMapper.selectByDepartMentName(memberParam.getDepartment());
             sysMember.setDepartmentId(department.getId());
         }
-        if(memberParam.getLevel() != null) {
+        if(StringUtils.isNotBlank(memberParam.getLevel())) {
             // 查询成员级别
             SysLevel sysLevel = sysLevelMapper.selectByLevelName(memberParam.getLevel());
             sysMember.setLevelId(sysLevel.getId());
         }
+        if(StringUtils.isNotBlank(memberParam.getQq()) && StringUtils.isBlank(memberParam.getEmail())) {
+            sysMember.setEmail(memberParam.getQq() + "@qq.com");
+        }
+        sysMemberMapper.updateByPrimaryKeySelective(sysMember);
     }
 
 }
