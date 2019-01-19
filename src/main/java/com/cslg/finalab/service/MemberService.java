@@ -1,5 +1,7 @@
 package com.cslg.finalab.service;
 
+import com.cslg.finalab.beans.PageQuery;
+import com.cslg.finalab.beans.PageResult;
 import com.cslg.finalab.param.MemberParam;
 import com.cslg.finalab.vo.CouncilVo;
 import com.cslg.finalab.vo.MemberVo;
@@ -15,11 +17,19 @@ public interface MemberService {
     List<CouncilVo> getCouncilList();
 
     /**
-     * 获取部门成员，根据部门id
+     * 获取部门成员，根据部门id。
      * @param departmentId 部门id
-     * @return List<MemberVo>
+     * @param pageQuery 分页
+     * @return PageResult<MemberVo>
      */
-    List<MemberVo> getMemberListByDepartmentId(Integer departmentId);
+    PageResult<MemberVo> getMemberListByDepartmentId(Integer departmentId, PageQuery pageQuery);
+
+    /**
+     * 获取所有成员
+     * @param pageQuery 分页
+     * @return PageResult<MemberVo>
+     */
+    PageResult<MemberVo> getAllMemberList(PageQuery pageQuery);
 
     /**
      * 保存成员
@@ -38,4 +48,5 @@ public interface MemberService {
      * @param memberParam 对象中只包含用户改变的属性
      */
     void updateMemberById(MemberParam memberParam);
+
 }

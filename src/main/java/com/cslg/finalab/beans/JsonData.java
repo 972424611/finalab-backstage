@@ -1,4 +1,4 @@
-package com.cslg.finalab.common;
+package com.cslg.finalab.beans;
 
 import lombok.Data;
 

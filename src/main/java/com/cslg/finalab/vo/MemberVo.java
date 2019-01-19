@@ -31,5 +31,7 @@ public class MemberVo {
 
     private String email;
 
+    private String department;
+
     private String levelName;
 }

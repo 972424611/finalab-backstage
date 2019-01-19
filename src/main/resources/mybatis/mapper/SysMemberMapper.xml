@@ -225,10 +225,27 @@
   <select id="selectByDepartmentId" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/>
     FROM sys_member WHERE department_id = #{departmentId}
+    ORDER BY id LIMIT #{pageQuery.offset}, #{pageQuery.pageSize}
+  </select>
+
+  <select id="selectAllMember" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/> FROM sys_member
+    ORDER BY id LIMIT #{pageQuery.offset}, #{pageQuery.pageSize}
   </select>
 
   <select id="countMemberByStuId" resultType="Integer">
     SELECT COUNT(id) FROM sys_member WHERE stu_id = #{stuId}
+  </select>
+
+  <select id="countMemberByDepartmentId" resultType="Integer">
+    SELECT COUNT(id) FROM sys_member
+    <if test="departmentId != null">
+      WHERE department_id = #{departmentId}
+    </if>
+  </select>
+
+  <select id="countAllMember" resultType="Integer">
+    SELECT COUNT(id) FROM sys_member
   </select>
 
   <delete id="batchDeleteByPrimaryKey" parameterType="Integer">

@@ -1,6 +1,6 @@
 package com.cslg.finalab.controller;
 
-import com.cslg.finalab.common.JsonData;
+import com.cslg.finalab.beans.JsonData;
 import com.cslg.finalab.service.MemoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,8 +1,8 @@
 package com.cslg.finalab.common;
 
 import com.alibaba.fastjson.JSON;
+import com.cslg.finalab.beans.JsonData;
 import com.cslg.finalab.exception.CustomException;
-import com.cslg.finalab.utils.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

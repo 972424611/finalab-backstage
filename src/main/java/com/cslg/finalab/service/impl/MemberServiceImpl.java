@@ -1,5 +1,7 @@
 package com.cslg.finalab.service.impl;
 
+import com.cslg.finalab.beans.PageQuery;
+import com.cslg.finalab.beans.PageResult;
 import com.cslg.finalab.common.BeanValidator;
 import com.cslg.finalab.dao.SysCollegeMapper;
 import com.cslg.finalab.dao.SysDepartmentMapper;
@@ -63,26 +65,58 @@ public class MemberServiceImpl implements MemberService {
         return councilVoList;
     }
 
+    private MemberVo sysToVo(SysMember sysMember) {
+        MemberVo memberVo = new MemberVo();
+        BeanUtils.copyProperties(sysMember, memberVo);
+        memberVo.setGender(sysMember.getGender() == 0 ? "男" : "女");
+        Integer levelId = sysMember.getLevelId();
+        SysLevel sysLevel = sysLevelMapper.selectByPrimaryKey(levelId);
+        memberVo.setLevelName(sysLevel.getName());
+        Integer collegeId = sysMember.getCollege();
+        SysCollege sysCollege = sysCollegeMapper.selectByPrimaryKey(collegeId);
+        memberVo.setCollege(sysCollege.getCollegeName());
+        SysDepartment sysDepartment = sysDepartmentMapper.selectByPrimaryKey(sysMember.getDepartmentId());
+        memberVo.setDepartment(sysDepartment.getName());
+        return memberVo;
+    }
+
     @Override
-    public List<MemberVo> getMemberListByDepartmentId(Integer departmentId) {
+    public PageResult<MemberVo> getMemberListByDepartmentId(Integer departmentId, PageQuery pageQuery) {
         if(departmentId == null) {
-            return new ArrayList<>();
+            return new PageResult<>();
         }
-        List<SysMember> sysMemberList = sysMemberMapper.selectByDepartmentId(departmentId);
+        int count = sysMemberMapper.countMemberByDepartmentId(departmentId);
+        if(count < 1) {
+            return new PageResult<>();
+        }
+        List<SysMember> sysMemberList = sysMemberMapper.selectByDepartmentId(departmentId, pageQuery);
         List<MemberVo> memberVoList = new ArrayList<>();
         for(SysMember sysMember : sysMemberList) {
-            MemberVo memberVo = new MemberVo();
-            BeanUtils.copyProperties(sysMember, memberVo);
-            memberVo.setGender(sysMember.getGender() == 0 ? "男" : "女");
-            Integer levelId = sysMember.getLevelId();
-            SysLevel sysLevel = sysLevelMapper.selectByPrimaryKey(levelId);
-            memberVo.setLevelName(sysLevel.getName());
-            Integer collegeId = sysMember.getCollege();
-            SysCollege sysCollege = sysCollegeMapper.selectByPrimaryKey(collegeId);
-            memberVo.setCollege(sysCollege.getCollegeName());
+            MemberVo memberVo = sysToVo(sysMember);
             memberVoList.add(memberVo);
         }
-        return memberVoList;
+        PageResult<MemberVo> pageResult = new PageResult<>();
+        pageResult.setList(memberVoList);
+        pageResult.setTotal(count);
+        return pageResult;
+    }
+
+    @Override
+    public PageResult<MemberVo> getAllMemberList(PageQuery pageQuery) {
+        int count = sysMemberMapper.countAllMember();
+        if(count < 1) {
+            return new PageResult<>();
+        }
+        List<SysMember> sysMemberList = sysMemberMapper.selectAllMember(pageQuery);
+        List<MemberVo> memberVoList = new ArrayList<>();
+        for(SysMember sysMember : sysMemberList) {
+            MemberVo memberVo = sysToVo(sysMember);
+            memberVoList.add(memberVo);
+        }
+        PageResult<MemberVo> pageResult = new PageResult<>();
+        pageResult.setList(memberVoList);
+        pageResult.setTotal(count);
+        return pageResult;
     }
 
     private void checkMember(MemberParam memberParam) {
