@@ -40,6 +40,7 @@ public class DruidConfiguration {
         servletRegistrationBean.addInitParameter("resetEnable","false");
         return servletRegistrationBean;
     }
+
     @Bean
     public FilterRegistrationBean statFilter(){
         //创建过滤器
