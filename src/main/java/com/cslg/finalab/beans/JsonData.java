@@ -22,8 +22,8 @@ public class JsonData {
 
     public JsonData(boolean ret, int code) {
         // 默认成功的请求code为200，失败则为自定义code
-        this.code = code;
         this.ret = ret;
+        this.code = code;
     }
 
     public JsonData() {

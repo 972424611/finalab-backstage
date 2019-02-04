@@ -2,6 +2,7 @@ package com.cslg.finalab.dao;
 
 import com.cslg.finalab.model.SysAchieve;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,8 @@ public interface SysAchieveMapper {
     // -----------------------------
 
     List<SysAchieve> selectAll();
+
+    int countAchieveByStuId(String stuId);
+
+    void batchDeleteByPrimaryKey(@Param("achieveIds") Integer[] achieveIds);
 }

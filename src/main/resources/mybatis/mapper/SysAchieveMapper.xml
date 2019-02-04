@@ -86,4 +86,15 @@
     SELECT <include refid="Base_Column_List"/>
     FROM sys_achieve
   </select>
+
+  <select id="countAchieveByStuId" resultType="Integer">
+    SELECT COUNT(id) FROM sys_achieve WHERE stu_id = #{stuId}
+  </select>
+
+  <delete id="batchDeleteByPrimaryKey" parameterType="Integer">
+    DELETE FROM sys_achieve WHERE id IN
+    <foreach collection="achieveIds" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
 </mapper>

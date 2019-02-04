@@ -156,7 +156,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteMemberById(Integer[] memberIds) {
-        if(memberIds.length == 0) {
+        if(memberIds == null || memberIds.length == 0) {
             return;
         }
         sysMemberMapper.batchDeleteByPrimaryKey(memberIds);

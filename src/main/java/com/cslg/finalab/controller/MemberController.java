@@ -76,6 +76,7 @@ public class MemberController {
      * @param memberParam 请求body数据
      * @return JsonData
      */
+    @ResponseBody
     @RequestMapping(value = "/updateMember")
     public JsonData updateMember(MemberParam memberParam) {
         memberService.updateMemberById(memberParam);
