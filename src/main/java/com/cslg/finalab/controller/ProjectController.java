@@ -1,6 +1,7 @@
 package com.cslg.finalab.controller;
 
 import com.cslg.finalab.beans.JsonData;
+import com.cslg.finalab.param.ProjectParam;
 import com.cslg.finalab.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,5 +26,12 @@ public class ProjectController {
     @RequestMapping(value = "/detail")
     public JsonData detail(@RequestParam(value = "id") Integer id) {
         return JsonData.success(projectService.getProjectDetailById(id));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/addProject")
+    public JsonData addProject(ProjectParam projectParam) {
+        int projectId = projectService.saveProject(projectParam);
+        return JsonData.success(projectId);
     }
 }

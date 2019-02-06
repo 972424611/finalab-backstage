@@ -10,7 +10,7 @@ import lombok.Getter;
 public enum AchieveEnum {
 
     // 成员已存在
-    ACHIEVE_ALREADY_EXISTS(1, "已有该成员的去向");
+    ACHIEVE_ALREADY_EXISTS(100, "已有该成员的去向");
 
     private Integer code;
 

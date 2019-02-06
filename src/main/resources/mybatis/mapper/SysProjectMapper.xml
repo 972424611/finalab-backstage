@@ -3,9 +3,11 @@
 <mapper namespace="com.cslg.finalab.dao.SysProjectMapper" >
   <resultMap id="BaseResultMap" type="com.cslg.finalab.model.SysProject" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="chief_planner" property="chiefPlanner" jdbcType="VARCHAR" />
+    <result column="chief_artisan" property="chiefArtisan" jdbcType="VARCHAR" />
     <result column="members" property="members" jdbcType="VARCHAR" />
     <result column="cover_image" property="coverImage" jdbcType="VARCHAR" />
   </resultMap>
@@ -14,7 +16,7 @@
     <result column="images" property="images" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, number, name, category, members, cover_image
+    id, name, version, category, chief_planner, chief_artisan, members, cover_image
   </sql>
   <sql id="Blob_Column_List" >
     introduction, images
@@ -32,12 +34,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cslg.finalab.model.SysProjectWithBLOBs" >
-    insert into sys_project (id, number, name, 
-      category, members, cover_image, 
-      introduction, images)
-    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{category,jdbcType=VARCHAR}, #{members,jdbcType=VARCHAR}, #{coverImage,jdbcType=VARCHAR}, 
-      #{introduction,jdbcType=LONGVARCHAR}, #{images,jdbcType=LONGVARCHAR})
+    insert into sys_project (id, name, version, 
+      category, chief_planner, chief_artisan, 
+      members, cover_image, introduction, 
+      images)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, 
+      #{category,jdbcType=VARCHAR}, #{chiefPlanner,jdbcType=VARCHAR}, #{chiefArtisan,jdbcType=VARCHAR}, 
+      #{members,jdbcType=VARCHAR}, #{coverImage,jdbcType=VARCHAR}, #{introduction,jdbcType=LONGVARCHAR}, 
+      #{images,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cslg.finalab.model.SysProjectWithBLOBs" >
     insert into sys_project
@@ -45,14 +49,20 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="number != null" >
-        number,
-      </if>
       <if test="name != null" >
         name,
       </if>
+      <if test="version != null" >
+        version,
+      </if>
       <if test="category != null" >
         category,
+      </if>
+      <if test="chiefPlanner != null" >
+        chief_planner,
+      </if>
+      <if test="chiefArtisan != null" >
+        chief_artisan,
       </if>
       <if test="members != null" >
         members,
@@ -71,14 +81,20 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="number != null" >
-        #{number,jdbcType=VARCHAR},
-      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
       <if test="category != null" >
         #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="chiefPlanner != null" >
+        #{chiefPlanner,jdbcType=VARCHAR},
+      </if>
+      <if test="chiefArtisan != null" >
+        #{chiefArtisan,jdbcType=VARCHAR},
       </if>
       <if test="members != null" >
         #{members,jdbcType=VARCHAR},
@@ -97,14 +113,20 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.cslg.finalab.model.SysProjectWithBLOBs" >
     update sys_project
     <set >
-      <if test="number != null" >
-        number = #{number,jdbcType=VARCHAR},
-      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
       <if test="category != null" >
         category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="chiefPlanner != null" >
+        chief_planner = #{chiefPlanner,jdbcType=VARCHAR},
+      </if>
+      <if test="chiefArtisan != null" >
+        chief_artisan = #{chiefArtisan,jdbcType=VARCHAR},
       </if>
       <if test="members != null" >
         members = #{members,jdbcType=VARCHAR},
@@ -123,9 +145,11 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cslg.finalab.model.SysProjectWithBLOBs" >
     update sys_project
-    set number = #{number,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
       category = #{category,jdbcType=VARCHAR},
+      chief_planner = #{chiefPlanner,jdbcType=VARCHAR},
+      chief_artisan = #{chiefArtisan,jdbcType=VARCHAR},
       members = #{members,jdbcType=VARCHAR},
       cover_image = #{coverImage,jdbcType=VARCHAR},
       introduction = #{introduction,jdbcType=LONGVARCHAR},
@@ -134,9 +158,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cslg.finalab.model.SysProject" >
     update sys_project
-    set number = #{number,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
       category = #{category,jdbcType=VARCHAR},
+      chief_planner = #{chiefPlanner,jdbcType=VARCHAR},
+      chief_artisan = #{chiefArtisan,jdbcType=VARCHAR},
       members = #{members,jdbcType=VARCHAR},
       cover_image = #{coverImage,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -149,5 +175,47 @@
     FROM sys_project
   </select>
 
+  <select id="countProjectByProjectName" resultMap="Integer">
+    SELECT COUNT(id) FROM sys_project WHERE name = #{name}
+  </select>
 
+  <insert id="insertSelectiveAndGetProjectId" parameterType="com.cslg.finalab.model.SysProjectWithBLOBs" keyProperty="id" useGeneratedKeys="true">
+    insert into sys_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="chiefPlanner != null" >
+        chief_planner,
+      </if>
+      <if test="chiefArtisan != null" >
+        chief_artisan,
+      </if>
+      <if test="members != null" >
+        members,
+      </if>
+      <if test="coverImage != null" >
+        cover_image,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="images != null" >
+        images,
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateImageByProjectId">
+    UPDATE sys_project SET cover_image = #{coverImage}, images = #{images} WHERE id = #{id}
+  </update>
 </mapper>

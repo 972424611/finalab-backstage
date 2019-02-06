@@ -3,6 +3,7 @@ package com.cslg.finalab.dao;
 import com.cslg.finalab.model.SysProject;
 import com.cslg.finalab.model.SysProjectWithBLOBs;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,4 +26,12 @@ public interface SysProjectMapper {
     // -------------------------------
 
     List<SysProjectWithBLOBs> selectAll();
+
+    int countProjectByProjectName(String name);
+
+    void insertAndGetProjectId(SysProjectWithBLOBs sysProjectWithBLOBs);
+
+    void insertSelectiveAndGetProjectId(SysProjectWithBLOBs sysProjectWithBLOBs);
+
+    void updateImageByProjectId(@Param("coverImage") String coverImage, @Param("images") String images, @Param("projectId") int projectId);
 }

@@ -7,6 +7,12 @@ import java.util.List;
 @Data
 public class ProjectDetailVo {
 
+    private String version;
+
+    private String chiefPlanner;
+
+    private String chiefArtisan;
+
     private List<String> memberList;
 
     private String category;

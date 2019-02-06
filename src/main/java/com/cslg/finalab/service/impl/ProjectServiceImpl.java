@@ -1,11 +1,16 @@
 package com.cslg.finalab.service.impl;
 
+import com.cslg.finalab.common.BeanValidator;
 import com.cslg.finalab.dao.SysProjectMapper;
+import com.cslg.finalab.enums.ProjectEnum;
+import com.cslg.finalab.exception.ProjectException;
 import com.cslg.finalab.model.SysProjectWithBLOBs;
+import com.cslg.finalab.param.ProjectParam;
 import com.cslg.finalab.service.ProjectService;
 import com.cslg.finalab.vo.ProjectDetailVo;
 import com.cslg.finalab.vo.ProjectVo;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -49,8 +54,7 @@ public class ProjectServiceImpl implements ProjectService {
         if(sysProjectWithBLOBs == null) {
             return projectDetailVo;
         }
-        projectDetailVo.setIntroduction(sysProjectWithBLOBs.getIntroduction());
-        projectDetailVo.setCategory(sysProjectWithBLOBs.getCategory());
+        BeanUtils.copyProperties(sysProjectWithBLOBs, projectDetailVo);
         String members = sysProjectWithBLOBs.getMembers();
         List<String> memberList = null;
         if(StringUtils.isNotBlank(members)) {
@@ -68,4 +72,25 @@ public class ProjectServiceImpl implements ProjectService {
         projectDetailVo.setImageList(imageList);
         return projectDetailVo;
     }
+
+    @Override
+    public int saveProject(ProjectParam projectParam) {
+        BeanValidator.check(projectParam);
+        // 判断该项目是否存在
+        if(sysProjectMapper.countProjectByProjectName(projectParam.getName()) > 0) {
+            throw new ProjectException(ProjectEnum.PROJECT_ALREADY_EXISTS);
+        }
+        // 判断技术负责人和策划负责人是否为同一个人
+        if(projectParam.getChiefArtisan().equals(projectParam.getChiefPlanner())) {
+            throw new ProjectException(ProjectEnum.PLANNER_ARTISAN_NOT_THE_SAME_PEOPLE);
+        }
+        if(StringUtils.isBlank(projectParam.getVersion())) {
+            projectParam.setVersion("v1.0");
+        }
+        SysProjectWithBLOBs sysProjectWithBLOBs = new SysProjectWithBLOBs();
+        BeanUtils.copyProperties(projectParam, sysProjectWithBLOBs);
+        sysProjectMapper.insertSelectiveAndGetProjectId(sysProjectWithBLOBs);
+        return sysProjectWithBLOBs.getId();
+    }
+
 }

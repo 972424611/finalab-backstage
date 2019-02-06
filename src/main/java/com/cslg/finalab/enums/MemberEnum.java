@@ -10,10 +10,10 @@ import lombok.Getter;
 public enum MemberEnum {
 
     // 如果前端传过来的参数为null，就抛出此异常
-    INFORMATION_CANNOT_BE_EMPTY(1, "请填写相关信息"),
+    INFORMATION_CANNOT_BE_EMPTY(200, "请填写相关信息"),
 
     // 成员已存在
-    MEMBER_ALREADY_EXISTS(2, "学号重复");
+    MEMBER_ALREADY_EXISTS(201, "学号重复");
 
     private Integer code;
 
