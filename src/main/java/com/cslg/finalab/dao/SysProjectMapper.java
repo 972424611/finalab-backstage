@@ -33,5 +33,9 @@ public interface SysProjectMapper {
 
     void insertSelectiveAndGetProjectId(SysProjectWithBLOBs sysProjectWithBLOBs);
 
-    void updateImageByProjectId(@Param("coverImage") String coverImage, @Param("images") String images, @Param("projectId") int projectId);
+    void updateImagesByProjectId(@Param("images") String images, @Param("id") int projectId);
+
+    void updateCoverImageByProjectId(@Param("coverImage") String coverImage, @Param("id") int projectId);
+
+    int countProjectByProjectId(@Param("id") int projectId);
 }

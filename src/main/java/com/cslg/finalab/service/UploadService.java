@@ -1,7 +1,6 @@
 package com.cslg.finalab.service;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Twilight
@@ -9,9 +8,7 @@ import java.util.List;
  */
 public interface UploadService {
 
-    /**
-     * 上传图片
-     * @param request 图片资源
-     */
-    void uploadImage(HttpServletRequest request);
+    void uploadImage(MultipartFile multipartFile, int projectId);
+
+    void batchUploadImage(MultipartFile[] multipartFile, int projectId);
 }

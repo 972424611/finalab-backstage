@@ -1,7 +1,9 @@
 package com.cslg.finalab.service.impl;
 
 import com.cslg.finalab.dao.SysProjectMapper;
+import com.cslg.finalab.enums.ProjectEnum;
 import com.cslg.finalab.enums.UploadEnum;
+import com.cslg.finalab.exception.ProjectException;
 import com.cslg.finalab.exception.UploadException;
 import com.cslg.finalab.service.UploadService;
 import com.google.common.collect.Sets;
@@ -10,14 +12,19 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +32,8 @@ import java.util.Set;
  * @author Twilight
  * @date 2019-02-06 14:41
  */
-public class UploadServiceImpl implements UploadService {
+@Service
+        public class UploadServiceImpl implements UploadService {
 
     @Value("${image.address}")
     private String imageAddress;
@@ -42,21 +50,6 @@ public class UploadServiceImpl implements UploadService {
 
     @Autowired
     private SysProjectMapper sysProjectMapper;
-
-    private String getFormatAndTeam(FileItem item) {
-        long size = item.getSize();
-        // 设置上传的最大值5MB，5*1024*1024
-        if(size > MAXSIZE) {
-            throw new UploadException(UploadEnum.IMAGE_TOO_LARGE);
-        }
-        String fileName = item.getName();
-        String format = fileName.substring(fileName.lastIndexOf("."));
-        // 检查格式
-        if(!imageFormatSet.contains(format)) {
-            throw new UploadException(UploadEnum.IMAGE_FORMAT_ERROR);
-        }
-        return format;
-    }
 
     private File createFile(String pathName) {
         File file = new File(pathName);
@@ -78,66 +71,65 @@ public class UploadServiceImpl implements UploadService {
         return file;
     }
 
-    private void saveProjectImage(StringBuilder imagePaths, String projectId) {
-        String[] paths = imagePaths.toString().split(" ");
-        String coverImage = paths[0];
-        String images = paths[1];
-        int id = Integer.parseInt(projectId);
-        sysProjectMapper.updateImageByProjectId(coverImage, images, id);
-    }
-
-    @Override
-    public void uploadImage(HttpServletRequest request) {
-        DiskFileItemFactory factory = new DiskFileItemFactory();
-        ServletFileUpload upload = new ServletFileUpload(factory);
-        upload.setHeaderEncoding("UTF-8");
-        InputStream inputStream = null;
-        FileOutputStream fileOutputStream = null;
-        StringBuilder imagePaths = new StringBuilder();
-        try {
-            // 得到所有文件
-            List<FileItem> list = upload.parseRequest(request);
-            String projectId = request.getParameter("id");
-            // 依次处理每个上传的文件
-            for(int i = 0; i < list.size(); i++) {
-                FileItem item = list.get(i);
-                // 判断是否是普通标单项，必须是enctype="multipart/form-data"
-                if(!item.isFormField()) {
-                    String format = getFormatAndTeam(item);
-                    inputStream = item.getInputStream();
-                    byte[] buffer = new byte[1024];
-                    String pathName = imageAddress + projectId + "/" + i + format;
-                    File file = createFile(pathName);
-                    fileOutputStream = new FileOutputStream(file);
-                    int len;
-                    while((len = inputStream.read(buffer)) > 0) {
-                        fileOutputStream.write(buffer, 0, len);
-                    }
-                    imagePaths.append(pathName);
-                    if(i == 0) {
-                        imagePaths.append(" ");
-                    } else if(i != list.size() - 1) {
-                        imagePaths.append(",");
-                    }
-                }
-            }
-            saveProjectImage(imagePaths, projectId);
-        } catch (FileUploadException | IOException e) {
-            e.printStackTrace();
-            throw new UploadException(UploadEnum.SERVER_BUSY);
-        } finally {
-            if(inputStream != null) {
-                try {
-                    inputStream.close();
-                    if(fileOutputStream != null) {
-                        fileOutputStream.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    private void checkImageSize(long size) {
+        // 设置上传的最大值5MB，5*1024*1024
+        if(size > MAXSIZE) {
+            throw new UploadException(UploadEnum.IMAGE_TOO_LARGE);
         }
     }
 
+    private String checkFileNameAndGetFormat(String fileName) {
+        if(StringUtils.isBlank(fileName)) {
+            throw new UploadException(UploadEnum.IMAGE_FORMAT_ERROR);
+        }
+        String format = fileName.substring(fileName.lastIndexOf("."));
+        // 检查格式
+        if(!imageFormatSet.contains(format)) {
+            throw new UploadException(UploadEnum.IMAGE_FORMAT_ERROR);
+        }
+        return format;
+    }
 
+    private void writeToFile(String pathName, MultipartFile multipartFile) {
+        File file = createFile(pathName);
+        try {
+            multipartFile.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new UploadException(UploadEnum.SERVER_BUSY);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void uploadImage(MultipartFile multipartFile, int projectId) {
+        if(sysProjectMapper.countProjectByProjectId(projectId) != 1) {
+            throw new ProjectException(ProjectEnum.PROJECT_NOT_FOUND);
+        }
+        checkImageSize(multipartFile.getSize());
+        String format = checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
+        String pathName = imageAddress + projectId + "/coverImage" + format;
+        writeToFile(pathName, multipartFile);
+        sysProjectMapper.updateCoverImageByProjectId(pathName, projectId);
+    }
+
+    @Override
+    @Transactional
+    public void batchUploadImage(MultipartFile[] multipartFiles, int projectId) {
+        if(sysProjectMapper.countProjectByProjectId(projectId) != 1) {
+            throw new ProjectException(ProjectEnum.PROJECT_NOT_FOUND);
+        }
+        StringBuilder paths = new StringBuilder();
+        for(int i = 0; i < multipartFiles.length; i++) {
+            checkImageSize(multipartFiles[i].getSize());
+            String format = checkFileNameAndGetFormat(multipartFiles[i].getOriginalFilename());
+            String pathName = imageAddress + projectId + "/image" + i + format;
+            writeToFile(pathName, multipartFiles[i]);
+            paths.append(pathName);
+            if(i != multipartFiles.length - 1) {
+                paths.append(",");
+            }
+        }
+        sysProjectMapper.updateImagesByProjectId(paths.toString(), projectId);
+    }
 }

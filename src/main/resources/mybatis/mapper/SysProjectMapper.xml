@@ -175,7 +175,7 @@
     FROM sys_project
   </select>
 
-  <select id="countProjectByProjectName" resultMap="Integer">
+  <select id="countProjectByProjectName" resultType="Integer">
     SELECT COUNT(id) FROM sys_project WHERE name = #{name}
   </select>
 
@@ -215,7 +215,16 @@
     </trim>
   </insert>
 
-  <update id="updateImageByProjectId">
-    UPDATE sys_project SET cover_image = #{coverImage}, images = #{images} WHERE id = #{id}
+  <update id="updateImagesByProjectId">
+    UPDATE sys_project SET images = #{images} WHERE id = #{id}
   </update>
+
+  <update id="updateCoverImageByProjectId">
+    UPDATE sys_project SET cover_image = #{coverImage} WHERE id = #{id}
+  </update>
+
+  <select id="countProjectByProjectId" resultType="Integer">
+    SELECT COUNT(id) FROM sys_project WHERE id = #{id}
+  </select>
+
 </mapper>

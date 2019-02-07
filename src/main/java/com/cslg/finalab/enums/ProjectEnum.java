@@ -9,7 +9,9 @@ public enum ProjectEnum {
     PROJECT_ALREADY_EXISTS(300, "项目已经存在"),
 
     // 技术负责人和策划负责人不能为同一个人
-    PLANNER_ARTISAN_NOT_THE_SAME_PEOPLE(301, "技术负责人和策划负责人不能为同一个人");
+    PLANNER_ARTISAN_NOT_THE_SAME_PEOPLE(301, "技术负责人和策划负责人不能为同一个人"),
+
+    PROJECT_NOT_FOUND(302, "找不到该项目");
 
     private Integer code;
 
