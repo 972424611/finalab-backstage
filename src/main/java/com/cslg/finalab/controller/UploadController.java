@@ -23,17 +23,19 @@ public class UploadController {
 
     /**
      * 上传图片
-     * @return JsonData
      */
     @ResponseBody
-    @RequestMapping(value = "/image")
+    @RequestMapping(value = "/project/image")
     public JsonData image(@RequestParam("image") MultipartFile file, @RequestParam("id") Integer id) {
         uploadService.uploadImage(file, id);
         return JsonData.success();
     }
 
+    /**
+     * 批量上传
+     */
     @ResponseBody
-    @RequestMapping(value = "/batchImage")
+    @RequestMapping(value = "/project/batchImage")
     public JsonData batchImage(@RequestParam("images") MultipartFile[] file, @RequestParam("id") Integer id) {
         uploadService.batchUploadImage(file, id);
         return JsonData.success();
