@@ -38,4 +38,6 @@ public interface SysProjectMapper {
     void updateCoverImageByProjectId(@Param("coverImage") String coverImage, @Param("id") int projectId);
 
     int countProjectByProjectId(@Param("id") int projectId);
+
+    void batchDeleteByPrimaryKey(@Param("projectIds") Integer[] projectIds);
 }

@@ -27,4 +27,16 @@ public interface ProjectService {
      * @return 项目的id
      */
     int saveProject(ProjectParam projectParam);
+
+    /**
+     * 根据项目id删除项目
+     * @param projectIds 项目ids
+     */
+    void deleteProjectById(Integer[] projectIds);
+
+    /**
+     * 更新项目，只更新不为null的属性。
+     * @param projectParam 对象中只包含项目改变的属性
+     */
+    void updateProjectById(ProjectParam projectParam);
 }

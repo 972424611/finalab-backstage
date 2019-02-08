@@ -32,8 +32,8 @@ public class AchieveController {
      * @return JsonData
      */
     @ResponseBody
-    @RequestMapping(value = "/addAchieve")
-    public JsonData addAchieve(AchieveParam achieveParam) {
+    @RequestMapping(value = "/add")
+    public JsonData add(AchieveParam achieveParam) {
         achieveService.saveAchieve(achieveParam);
         return JsonData.success();
     }
@@ -44,8 +44,8 @@ public class AchieveController {
      * @return JsonData
      */
     @ResponseBody
-    @RequestMapping(value = "/deleteAchieve")
-    public JsonData deleteAchieve(@RequestParam(value = "ids") Integer[] achieveIds) {
+    @RequestMapping(value = "/delete")
+    public JsonData delete(@RequestParam(value = "ids") Integer[] achieveIds) {
         achieveService.deleteAchieveById(achieveIds);
         return JsonData.success();
     }

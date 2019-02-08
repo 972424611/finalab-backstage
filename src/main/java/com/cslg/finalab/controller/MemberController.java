@@ -35,8 +35,8 @@ public class MemberController {
      * @return JsonData
      */
     @ResponseBody
-    @RequestMapping(value = "/getMembers")
-    public JsonData getMembers(@RequestParam(value = "id", required = false) Integer departmentId, PageQuery pageQuery) {
+    @RequestMapping(value = "/get")
+    public JsonData get(@RequestParam(value = "id", required = false) Integer departmentId, PageQuery pageQuery) {
         PageResult<MemberVo> pageResult;
         if(departmentId == null || departmentId == 0) {
             pageResult = memberService.getAllMemberList(pageQuery);
@@ -53,8 +53,8 @@ public class MemberController {
      * @return JsonData
      */
     @ResponseBody
-    @RequestMapping(value = "/addMember")
-    public JsonData addMember(MemberParam memberParam) {
+    @RequestMapping(value = "/add")
+    public JsonData add(MemberParam memberParam) {
         memberService.saveMember(memberParam);
         return JsonData.success();
     }
@@ -65,8 +65,8 @@ public class MemberController {
      * @return JsonData
      */
     @ResponseBody
-    @RequestMapping(value = "/deleteMember")
-    public JsonData deleteMember(@RequestParam(value = "ids") Integer[] memberIds) {
+    @RequestMapping(value = "/delete")
+    public JsonData delete(@RequestParam(value = "ids") Integer[] memberIds) {
         memberService.deleteMemberById(memberIds);
         return JsonData.success();
     }
@@ -77,8 +77,8 @@ public class MemberController {
      * @return JsonData
      */
     @ResponseBody
-    @RequestMapping(value = "/updateMember")
-    public JsonData updateMember(MemberParam memberParam) {
+    @RequestMapping(value = "/update")
+    public JsonData update(MemberParam memberParam) {
         memberService.updateMemberById(memberParam);
         return JsonData.success();
     }

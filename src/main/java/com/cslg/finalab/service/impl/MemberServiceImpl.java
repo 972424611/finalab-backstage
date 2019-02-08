@@ -190,6 +190,7 @@ public class MemberServiceImpl implements MemberService {
             SysLevel sysLevel = sysLevelMapper.selectByLevelName(memberParam.getLevel());
             sysMember.setLevelId(sysLevel.getId());
         }
+        // 默认把邮箱设置为qq邮箱
         if(StringUtils.isNotBlank(memberParam.getQq()) && StringUtils.isBlank(memberParam.getEmail())) {
             sysMember.setEmail(memberParam.getQq() + "@qq.com");
         }

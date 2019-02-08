@@ -4,6 +4,7 @@ import com.cslg.finalab.common.BeanValidator;
 import com.cslg.finalab.dao.SysProjectMapper;
 import com.cslg.finalab.enums.ProjectEnum;
 import com.cslg.finalab.exception.ProjectException;
+import com.cslg.finalab.model.SysProject;
 import com.cslg.finalab.model.SysProjectWithBLOBs;
 import com.cslg.finalab.param.ProjectParam;
 import com.cslg.finalab.service.ProjectService;
@@ -91,6 +92,32 @@ public class ProjectServiceImpl implements ProjectService {
         BeanUtils.copyProperties(projectParam, sysProjectWithBLOBs);
         sysProjectMapper.insertSelectiveAndGetProjectId(sysProjectWithBLOBs);
         return sysProjectWithBLOBs.getId();
+    }
+
+    @Override
+    public void deleteProjectById(Integer[] projectIds) {
+        if(projectIds == null || projectIds.length == 0) {
+            return;
+        }
+        sysProjectMapper.batchDeleteByPrimaryKey(projectIds);
+    }
+
+    @Override
+    public void updateProjectById(ProjectParam projectParam) {
+        // 检查项目名是否重复
+        if(StringUtils.isNotBlank(projectParam.getName())) {
+            String name = projectParam.getName();
+            if(sysProjectMapper.countProjectByProjectName(name) > 0) {
+                throw new ProjectException(ProjectEnum.PROJECT_ALREADY_EXISTS);
+            }
+        }
+        // 判断技术负责人和策划负责人是否为同一个人
+        if(projectParam.getChiefArtisan().equals(projectParam.getChiefPlanner())) {
+            throw new ProjectException(ProjectEnum.PLANNER_ARTISAN_NOT_THE_SAME_PEOPLE);
+        }
+        SysProjectWithBLOBs sysProjectWithBLOBs = new SysProjectWithBLOBs();
+        BeanUtils.copyProperties(projectParam, sysProjectWithBLOBs);
+        sysProjectMapper.updateByPrimaryKeySelective()
     }
 
 }

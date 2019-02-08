@@ -29,9 +29,23 @@ public class ProjectController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/addProject")
-    public JsonData addProject(ProjectParam projectParam) {
+    @RequestMapping(value = "/add")
+    public JsonData add(ProjectParam projectParam) {
         int projectId = projectService.saveProject(projectParam);
         return JsonData.success(projectId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete")
+    public JsonData delete(@RequestParam(value = "ids") Integer[] projectIds) {
+        projectService.deleteProjectById(projectIds);
+        return JsonData.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/update")
+    public JsonData update(ProjectParam projectParam) {
+        projectService.updateProjectById(projectParam);
+        return JsonData.success();
     }
 }

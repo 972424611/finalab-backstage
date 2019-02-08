@@ -227,4 +227,11 @@
     SELECT COUNT(id) FROM sys_project WHERE id = #{id}
   </select>
 
+  <delete id="batchDeleteByPrimaryKey" parameterType="Integer">
+    DELETE FROM sys_project WHERE id IN
+    <foreach collection="projectIds" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
+
 </mapper>

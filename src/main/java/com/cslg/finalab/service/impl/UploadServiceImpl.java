@@ -33,7 +33,7 @@ import java.util.Set;
  * @date 2019-02-06 14:41
  */
 @Service
-        public class UploadServiceImpl implements UploadService {
+public class UploadServiceImpl implements UploadService {
 
     @Value("${image.address}")
     private String imageAddress;
