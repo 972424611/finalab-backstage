@@ -117,7 +117,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
         SysProjectWithBLOBs sysProjectWithBLOBs = new SysProjectWithBLOBs();
         BeanUtils.copyProperties(projectParam, sysProjectWithBLOBs);
-        sysProjectMapper.updateByPrimaryKeySelective()
+        sysProjectMapper.updateByPrimaryKeySelective(sysProjectWithBLOBs);
     }
 
 }
