@@ -223,7 +223,7 @@
     UPDATE sys_project SET cover_image = #{coverImage} WHERE id = #{id}
   </update>
 
-  <select id="countProjectByProjectId" resultType="Integer">
+  <select id="countProjectByPrimaryKey" resultType="Integer">
     SELECT COUNT(id) FROM sys_project WHERE id = #{id}
   </select>
 

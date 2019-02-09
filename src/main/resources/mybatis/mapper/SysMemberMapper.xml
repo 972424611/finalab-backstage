@@ -254,4 +254,12 @@
       #{id}
     </foreach>
   </delete>
+
+  <select id="countMemberPrimaryKey" resultType="Integer">
+    SELECT COUNT(id) FROM sys_member WHERE id = #{id}
+  </select>
+
+  <update id="updateHeadPortraitByPrimaryKey">
+    UPDATE sys_member SET head_portrait = #{headPortrait} WHERE id = #{id}
+  </update>
 </mapper>

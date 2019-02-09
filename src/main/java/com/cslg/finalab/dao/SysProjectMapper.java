@@ -33,11 +33,11 @@ public interface SysProjectMapper {
 
     void insertSelectiveAndGetProjectId(SysProjectWithBLOBs sysProjectWithBLOBs);
 
-    void updateImagesByProjectId(@Param("images") String images, @Param("id") int projectId);
+    void updateImagesByPrimaryKey(@Param("images") String images, @Param("id") int projectId);
 
-    void updateCoverImageByProjectId(@Param("coverImage") String coverImage, @Param("id") int projectId);
+    void updateCoverImageByPrimaryKey(@Param("coverImage") String coverImage, @Param("id") int projectId);
 
-    int countProjectByProjectId(@Param("id") int projectId);
+    int countProjectByPrimaryKey(@Param("id") int projectId);
 
     void batchDeleteByPrimaryKey(@Param("projectIds") Integer[] projectIds);
 }

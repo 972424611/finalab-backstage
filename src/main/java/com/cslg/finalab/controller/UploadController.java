@@ -22,22 +22,34 @@ public class UploadController {
     private UploadService uploadService;
 
     /**
-     * 上传图片
+     * 上传项目封面图片
      */
     @ResponseBody
-    @RequestMapping(value = "/project/image")
-    public JsonData image(@RequestParam("image") MultipartFile file, @RequestParam("id") Integer id) {
-        uploadService.uploadImage(file, id);
+    @RequestMapping(value = "/image/project")
+    public JsonData project(@RequestParam("image") MultipartFile file, @RequestParam("id") Integer id) {
+        uploadService.uploadProjectImage(file, id);
         return JsonData.success();
     }
 
     /**
-     * 批量上传
+     * 批量上传项目图片
      */
     @ResponseBody
-    @RequestMapping(value = "/project/batchImage")
-    public JsonData batchImage(@RequestParam("images") MultipartFile[] file, @RequestParam("id") Integer id) {
-        uploadService.batchUploadImage(file, id);
+    @RequestMapping(value = "/image/projectBatch")
+    public JsonData projectBatch(@RequestParam("images") MultipartFile[] file, @RequestParam("id") Integer id) {
+        uploadService.batchUploadProjectImage(file, id);
         return JsonData.success();
     }
+
+    /**
+     * 上传成员图片
+     */
+    @ResponseBody
+    @RequestMapping(value = "/image/member")
+    public JsonData member(@RequestParam("image") MultipartFile file, @RequestParam("id") Integer id) {
+        uploadService.uploadMemberImage(file, id);
+        return JsonData.success();
+    }
+
+
 }

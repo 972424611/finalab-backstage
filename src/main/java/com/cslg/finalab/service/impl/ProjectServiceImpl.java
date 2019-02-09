@@ -4,7 +4,6 @@ import com.cslg.finalab.common.BeanValidator;
 import com.cslg.finalab.dao.SysProjectMapper;
 import com.cslg.finalab.enums.ProjectEnum;
 import com.cslg.finalab.exception.ProjectException;
-import com.cslg.finalab.model.SysProject;
 import com.cslg.finalab.model.SysProjectWithBLOBs;
 import com.cslg.finalab.param.ProjectParam;
 import com.cslg.finalab.service.ProjectService;

@@ -8,7 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface UploadService {
 
-    void uploadImage(MultipartFile multipartFile, int projectId);
+    void uploadProjectImage(MultipartFile multipartFile, int projectId);
 
-    void batchUploadImage(MultipartFile[] multipartFile, int projectId);
+    void batchUploadProjectImage(MultipartFile[] multipartFile, int projectId);
+
+    void uploadMemberImage(MultipartFile multipartFile, Integer memberId);
 }

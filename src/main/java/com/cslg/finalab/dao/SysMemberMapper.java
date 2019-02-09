@@ -39,4 +39,7 @@ public interface SysMemberMapper {
 
     List<SysMember> selectAllMember(@Param("pageQuery") PageQuery pageQuery);
 
+    int countMemberPrimaryKey(@Param("id") Integer memberId);
+
+    void updateHeadPortraitByPrimaryKey(@Param("headPortrait") String pathName, @Param("id") Integer memberId);
 }

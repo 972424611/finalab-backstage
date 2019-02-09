@@ -1,10 +1,14 @@
 package com.cslg.finalab.service.impl;
 
+import com.cslg.finalab.dao.SysMemberMapper;
 import com.cslg.finalab.dao.SysProjectMapper;
+import com.cslg.finalab.enums.MemberEnum;
 import com.cslg.finalab.enums.ProjectEnum;
 import com.cslg.finalab.enums.UploadEnum;
+import com.cslg.finalab.exception.MemberException;
 import com.cslg.finalab.exception.ProjectException;
 import com.cslg.finalab.exception.UploadException;
+import com.cslg.finalab.model.SysMember;
 import com.cslg.finalab.service.UploadService;
 import com.google.common.collect.Sets;
 
@@ -50,6 +54,9 @@ public class UploadServiceImpl implements UploadService {
 
     @Autowired
     private SysProjectMapper sysProjectMapper;
+
+    @Autowired
+    private SysMemberMapper sysMemberMapper;
 
     private File createFile(String pathName) {
         File file = new File(pathName);
@@ -102,34 +109,49 @@ public class UploadServiceImpl implements UploadService {
 
     @Override
     @Transactional
-    public void uploadImage(MultipartFile multipartFile, int projectId) {
-        if(sysProjectMapper.countProjectByProjectId(projectId) != 1) {
+    public void uploadProjectImage(MultipartFile multipartFile, int projectId) {
+        if(sysProjectMapper.countProjectByPrimaryKey(projectId) != 1) {
             throw new ProjectException(ProjectEnum.PROJECT_NOT_FOUND);
         }
         checkImageSize(multipartFile.getSize());
         String format = checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
-        String pathName = imageAddress + projectId + "/coverImage" + format;
+        String pathName = imageAddress + "project/" + projectId + "/coverImage" + format;
         writeToFile(pathName, multipartFile);
-        sysProjectMapper.updateCoverImageByProjectId(pathName, projectId);
+        sysProjectMapper.updateCoverImageByPrimaryKey(pathName, projectId);
     }
 
     @Override
     @Transactional
-    public void batchUploadImage(MultipartFile[] multipartFiles, int projectId) {
-        if(sysProjectMapper.countProjectByProjectId(projectId) != 1) {
+    public void batchUploadProjectImage(MultipartFile[] multipartFiles, int projectId) {
+        if(sysProjectMapper.countProjectByPrimaryKey(projectId) != 1) {
             throw new ProjectException(ProjectEnum.PROJECT_NOT_FOUND);
         }
         StringBuilder paths = new StringBuilder();
         for(int i = 0; i < multipartFiles.length; i++) {
             checkImageSize(multipartFiles[i].getSize());
             String format = checkFileNameAndGetFormat(multipartFiles[i].getOriginalFilename());
-            String pathName = imageAddress + projectId + "/image" + i + format;
+            String pathName = imageAddress + "project/" + projectId + "/image" + i + format;
             writeToFile(pathName, multipartFiles[i]);
             paths.append(pathName);
             if(i != multipartFiles.length - 1) {
                 paths.append(",");
             }
         }
-        sysProjectMapper.updateImagesByProjectId(paths.toString(), projectId);
+        sysProjectMapper.updateImagesByPrimaryKey(paths.toString(), projectId);
+    }
+
+    @Override
+    public void uploadMemberImage(MultipartFile multipartFile, Integer memberId) {
+        SysMember sysMember = sysMemberMapper.selectByPrimaryKey(memberId);
+        if(sysMember == null) {
+            throw new MemberException(MemberEnum.MEMBER_NOT_FOUND);
+        }
+        checkImageSize(multipartFile.getSize());
+        String format = checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
+        String pathName = imageAddress + "member" + "/" +
+                sysMember.getGrade() + "/" +
+                sysMember.getStuId() + format;
+        writeToFile(pathName, multipartFile);
+        sysMemberMapper.updateHeadPortraitByPrimaryKey(pathName, memberId);
     }
 }

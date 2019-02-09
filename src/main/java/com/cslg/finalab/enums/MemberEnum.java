@@ -13,7 +13,10 @@ public enum MemberEnum {
     INFORMATION_CANNOT_BE_EMPTY(200, "请填写相关信息"),
 
     // 成员已存在
-    MEMBER_ALREADY_EXISTS(201, "学号重复");
+    MEMBER_ALREADY_EXISTS(201, "学号重复"),
+
+    // 成员不存在
+    MEMBER_NOT_FOUND(202, "找不到该成员");
 
     private Integer code;
 
