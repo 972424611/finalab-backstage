@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 /**
@@ -26,7 +30,8 @@ public class UploadController {
      */
     @ResponseBody
     @RequestMapping(value = "/image/project")
-    public JsonData project(@RequestParam("image") MultipartFile file, @RequestParam("id") Integer id) {
+    public JsonData project(@RequestParam("image") MultipartFile file,
+                            @RequestParam("id") Integer id) {
         uploadService.uploadProjectImage(file, id);
         return JsonData.success();
     }
@@ -36,7 +41,8 @@ public class UploadController {
      */
     @ResponseBody
     @RequestMapping(value = "/image/projectBatch")
-    public JsonData projectBatch(@RequestParam("images") MultipartFile[] file, @RequestParam("id") Integer id) {
+    public JsonData projectBatch(@RequestParam("images") MultipartFile[] file,
+                                 @RequestParam("id") Integer id) {
         uploadService.batchUploadProjectImage(file, id);
         return JsonData.success();
     }
@@ -46,10 +52,24 @@ public class UploadController {
      */
     @ResponseBody
     @RequestMapping(value = "/image/member")
-    public JsonData member(@RequestParam("image") MultipartFile file, @RequestParam("id") Integer id) {
-        uploadService.uploadMemberImage(file, id);
+    public JsonData member(HttpServletRequest request) {
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile file = multipartRequest.getFile("image");
+        String id = request.getParameter("id");
+        uploadService.uploadMemberImage(file, Integer.valueOf(id));
         return JsonData.success();
     }
 
-
+    /**
+     * 批量上传项目图片
+     */
+    @ResponseBody
+    @RequestMapping(value = "/image/memoryBatch")
+    public JsonData memoryBatch(HttpServletRequest request) {
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        List<MultipartFile> fileList = multipartRequest.getFiles("images");
+        String remark = request.getParameter("remark");
+        uploadService.batchUploadMemoryImage(fileList, remark);
+        return JsonData.success();
+    }
 }

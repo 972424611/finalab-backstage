@@ -21,8 +21,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cslg.finalab.model.SysMemory" >
-    insert into sys_memory (id, photo, time, 
-      remark)
+    insert into sys_memory (id, photo, time, remark)
     values (#{id,jdbcType=INTEGER}, #{photo,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
@@ -86,4 +85,12 @@
     SELECT <include refid="Base_Column_List"/>
     FROM sys_memory
   </select>
+
+  <insert id="batchInsert">
+    INSERT INTO sys_memory (photo, time, remark)
+    VALUES
+    <foreach collection="list" item="memory" separator=",">
+      (#{memory.photo}, #{memory.time}, #{memory.remark})
+    </foreach>
+  </insert>
 </mapper>

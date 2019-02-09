@@ -2,11 +2,13 @@ package com.cslg.finalab.dao;
 
 import com.cslg.finalab.model.SysMemory;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface SysMemoryMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(SysMemory record);
@@ -22,4 +24,6 @@ public interface SysMemoryMapper {
     // -------------------------------
 
     List<SysMemory> selectAll();
+
+    void batchInsert(@Param("list") List<SysMemory> sysMemoryList);
 }
