@@ -41,9 +41,9 @@ public class UploadController {
      */
     @ResponseBody
     @RequestMapping(value = "/image/projectBatch")
-    public JsonData projectBatch(@RequestParam("images") MultipartFile[] file,
+    public JsonData projectBatch(@RequestParam("images") MultipartFile[] files,
                                  @RequestParam("id") Integer id) {
-        uploadService.batchUploadProjectImage(file, id);
+        uploadService.batchUploadProjectImage(files, id);
         return JsonData.success();
     }
 
@@ -61,7 +61,7 @@ public class UploadController {
     }
 
     /**
-     * 批量上传项目图片
+     * 批量上传团队图片
      */
     @ResponseBody
     @RequestMapping(value = "/image/memoryBatch")

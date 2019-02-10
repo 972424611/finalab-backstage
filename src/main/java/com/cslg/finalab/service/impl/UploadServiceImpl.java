@@ -14,10 +14,6 @@ import com.cslg.finalab.model.SysMemory;
 import com.cslg.finalab.service.UploadService;
 import com.google.common.collect.Sets;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,11 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -197,8 +190,8 @@ public class UploadServiceImpl implements UploadService {
             String pathName = imageAddress + "memory" + "/" +
                     year + "/" + remark + "/" + (i + 1) + format;
             pathNameList.add(pathName);
-            sysMemory.setPhoto(pathName);
             sysMemory.setRemark(remark);
+            sysMemory.setPhoto(pathName);
             sysMemory.setTime(new Date());
             sysMemoryList.add(sysMemory);
         }

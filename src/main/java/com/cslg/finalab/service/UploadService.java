@@ -12,7 +12,7 @@ public interface UploadService {
 
     void uploadProjectImage(MultipartFile multipartFile, int projectId);
 
-    void batchUploadProjectImage(MultipartFile[] multipartFile, int projectId);
+    void batchUploadProjectImage(MultipartFile[] multipartFiles, int projectId);
 
     void uploadMemberImage(MultipartFile multipartFile, Integer memberId);
 
