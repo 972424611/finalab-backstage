@@ -6,6 +6,7 @@ import com.cslg.finalab.service.WinningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -18,12 +19,19 @@ public class WinningController {
     @Autowired
     private WinningService winningService;
 
+    /**
+     * 获取所有获奖信息
+     */
     @ResponseBody
     @RequestMapping(value = "/getAll")
     public JsonData getAll() {
         return JsonData.success(winningService.getAllWinningList());
     }
 
+    /**
+     * 新增获奖信息
+     * @param winningParam 获奖信息
+     */
     @ResponseBody
     @RequestMapping(value = "/add")
     public JsonData add(WinningParam winningParam) {
@@ -31,5 +39,12 @@ public class WinningController {
         Map<String, Integer> resultMap = new HashMap<>(1);
         resultMap.put("winningId", winningId);
         return JsonData.success(resultMap);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete")
+    public JsonData delete(@RequestParam(value = "ids") Integer[] winningIds) {
+        winningService.deleteWinningById(winningIds);
+        return JsonData.success();
     }
 }

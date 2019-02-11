@@ -19,4 +19,10 @@ public interface WinningService {
      * @return 新增加获奖信息的id
      */
     int saveWinning(WinningParam winningParam);
+
+    /**
+     * 删除获奖信息
+     * @param winningIds 获奖id数组
+     */
+    void deleteWinningById(Integer[] winningIds);
 }

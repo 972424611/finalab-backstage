@@ -14,6 +14,9 @@ public class MemoryController {
     @Autowired
     private MemoryService memoryService;
 
+    /**
+     * 随机获取照片
+     */
     @ResponseBody
     @RequestMapping(value = "/random")
     public JsonData random() {

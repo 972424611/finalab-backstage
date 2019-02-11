@@ -212,4 +212,11 @@
   <update id="updateAwardImageByPrimaryKey">
     UPDATE sys_winning SET award_image = #{awardImage} WHERE id = #{id}
   </update>
+
+  <delete id="batchDeleteByPrimaryKey" parameterType="Integer">
+    DELETE FROM sys_winning WHERE id IN
+    <foreach collection="winningIds" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
 </mapper>

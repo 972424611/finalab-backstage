@@ -29,4 +29,6 @@ public interface SysWinningMapper {
     void insertSelectiveAndGetWinningId(SysWinning sysWinning);
 
     void updateAwardImageByPrimaryKey(@Param("awardImage") String awardImage, @Param("id") Integer winningId);
+
+    void batchDeleteByPrimaryKey(@Param("winningIds") Integer[] winningIds);
 }

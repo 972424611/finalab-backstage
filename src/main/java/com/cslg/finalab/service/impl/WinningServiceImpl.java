@@ -52,4 +52,12 @@ public class WinningServiceImpl implements WinningService {
         sysWinningMapper.insertSelectiveAndGetWinningId(sysWinning);
         return sysWinning.getId();
     }
+
+    @Override
+    public void deleteWinningById(Integer[] winningIds) {
+        if(winningIds == null || winningIds.length == 0) {
+            return;
+        }
+        sysWinningMapper.batchDeleteByPrimaryKey(winningIds);
+    }
 }
