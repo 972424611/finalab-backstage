@@ -30,17 +30,22 @@ public class MemberServiceImpl implements MemberService {
     @Value("${server_address}")
     private String serverAddress;
 
-    @Autowired
-    private SysMemberMapper sysMemberMapper;
+    private final SysMemberMapper sysMemberMapper;
+
+    private final SysLevelMapper sysLevelMapper;
+
+    private final SysCollegeMapper sysCollegeMapper;
+
+    private final SysDepartmentMapper sysDepartmentMapper;
 
     @Autowired
-    private SysLevelMapper sysLevelMapper;
-
-    @Autowired
-    private SysCollegeMapper sysCollegeMapper;
-
-    @Autowired
-    private SysDepartmentMapper sysDepartmentMapper;
+    public MemberServiceImpl(SysMemberMapper sysMemberMapper, SysLevelMapper sysLevelMapper,
+                             SysCollegeMapper sysCollegeMapper, SysDepartmentMapper sysDepartmentMapper) {
+        this.sysMemberMapper = sysMemberMapper;
+        this.sysLevelMapper = sysLevelMapper;
+        this.sysCollegeMapper = sysCollegeMapper;
+        this.sysDepartmentMapper = sysDepartmentMapper;
+    }
 
     @Override
     public List<CouncilVo> getCouncilList() {
@@ -145,7 +150,7 @@ public class MemberServiceImpl implements MemberService {
             sysMember.setEmail(memberParam.getQq() + "@qq.com");
         }
         // 查询部门
-        SysDepartment department = sysDepartmentMapper.selectByDepartMentName(memberParam.getDepartment());
+        SysDepartment department = sysDepartmentMapper.selectByDepartmentName(memberParam.getDepartment());
         sysMember.setDepartmentId(department.getId());
         // 查询成员级别
         SysLevel sysLevel = sysLevelMapper.selectByLevelName(memberParam.getLevel());
@@ -182,7 +187,7 @@ public class MemberServiceImpl implements MemberService {
         }
         if(StringUtils.isNotBlank(memberParam.getDepartment())) {
             // 查询部门
-            SysDepartment department = sysDepartmentMapper.selectByDepartMentName(memberParam.getDepartment());
+            SysDepartment department = sysDepartmentMapper.selectByDepartmentName(memberParam.getDepartment());
             sysMember.setDepartmentId(department.getId());
         }
         if(StringUtils.isNotBlank(memberParam.getLevel())) {

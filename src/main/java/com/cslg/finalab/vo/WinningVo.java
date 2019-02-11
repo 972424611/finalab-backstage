@@ -14,7 +14,7 @@ public class WinningVo {
 
     private String awardLevel;
 
-    private Date time;
+    private String awardTime;
 
     private String profile;
 

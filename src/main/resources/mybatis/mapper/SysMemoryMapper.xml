@@ -93,4 +93,5 @@
       (#{memory.photo}, #{memory.time}, #{memory.remark})
     </foreach>
   </insert>
+
 </mapper>

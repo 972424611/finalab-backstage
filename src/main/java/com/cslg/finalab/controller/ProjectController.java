@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequestMapping(value = "/sys/project")
 public class ProjectController {
@@ -32,7 +35,9 @@ public class ProjectController {
     @RequestMapping(value = "/add")
     public JsonData add(ProjectParam projectParam) {
         int projectId = projectService.saveProject(projectParam);
-        return JsonData.success(projectId);
+        Map<String, Integer> resultMap = new HashMap<>(1);
+        resultMap.put("projectId", projectId);
+        return JsonData.success(resultMap);
     }
 
     @ResponseBody

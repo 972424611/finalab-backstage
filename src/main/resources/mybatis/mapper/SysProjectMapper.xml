@@ -213,6 +213,38 @@
         images,
       </if>
     </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="chiefPlanner != null" >
+        #{chiefPlanner,jdbcType=VARCHAR},
+      </if>
+      <if test="chiefArtisan != null" >
+        #{chiefArtisan,jdbcType=VARCHAR},
+      </if>
+      <if test="members != null" >
+        #{members,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImage != null" >
+        #{coverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="images != null" >
+        #{images,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
   </insert>
 
   <update id="updateImagesByProjectId">
@@ -233,5 +265,6 @@
       #{id}
     </foreach>
   </delete>
+
 
 </mapper>

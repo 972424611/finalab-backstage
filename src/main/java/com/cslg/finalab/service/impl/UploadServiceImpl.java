@@ -3,14 +3,18 @@ package com.cslg.finalab.service.impl;
 import com.cslg.finalab.dao.SysMemberMapper;
 import com.cslg.finalab.dao.SysMemoryMapper;
 import com.cslg.finalab.dao.SysProjectMapper;
+import com.cslg.finalab.dao.SysWinningMapper;
 import com.cslg.finalab.enums.MemberEnum;
 import com.cslg.finalab.enums.ProjectEnum;
 import com.cslg.finalab.enums.UploadEnum;
+import com.cslg.finalab.enums.WinningEnum;
 import com.cslg.finalab.exception.MemberException;
 import com.cslg.finalab.exception.ProjectException;
 import com.cslg.finalab.exception.UploadException;
+import com.cslg.finalab.exception.WinningException;
 import com.cslg.finalab.model.SysMember;
 import com.cslg.finalab.model.SysMemory;
+import com.cslg.finalab.model.SysWinning;
 import com.cslg.finalab.service.UploadService;
 import com.google.common.collect.Sets;
 
@@ -51,13 +55,15 @@ public class UploadServiceImpl implements UploadService {
 
     private final SysMemoryMapper sysMemoryMapper;
 
+    private final SysWinningMapper sysWinningMapper;
+
     @Autowired
-    public UploadServiceImpl(SysProjectMapper sysProjectMapper,
-                             SysMemberMapper sysMemberMapper,
-                             SysMemoryMapper sysMemoryMapper) {
+    public UploadServiceImpl(SysProjectMapper sysProjectMapper, SysMemberMapper sysMemberMapper,
+                             SysMemoryMapper sysMemoryMapper, SysWinningMapper sysWinningMapper) {
         this.sysProjectMapper = sysProjectMapper;
         this.sysMemberMapper = sysMemberMapper;
         this.sysMemoryMapper = sysMemoryMapper;
+        this.sysWinningMapper = sysWinningMapper;
     }
 
     private File createFile(String pathName) {
@@ -199,6 +205,23 @@ public class UploadServiceImpl implements UploadService {
             writeToFile(pathNameList.get(i), fileList.get(i));
         }
         sysMemoryMapper.batchInsert(sysMemoryList);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void uploadWinningImage(MultipartFile multipartFile, Integer winningId) {
+        SysWinning sysWinning = sysWinningMapper.selectByPrimaryKey(winningId);
+        if(sysWinning == null) {
+            throw new WinningException(WinningEnum.WINNING_NOT_FOUND);
+        }
+        checkImageSize(multipartFile.getSize());
+        String format = checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
+        // eg: /Users/twilight/IdeaProjects/finalab/image/ + winning/ + 盲杖/ + 中国大学生计算机设计大赛.jpg
+        String pathName = imageAddress + "winning" + "/" +
+                sysWinning.getName() + "/" +
+                sysWinning.getAwardName() + format;
+        writeToFile(pathName, multipartFile);
+        sysWinningMapper.updateAwardImageByPrimaryKey(pathName, winningId);
     }
 
 }

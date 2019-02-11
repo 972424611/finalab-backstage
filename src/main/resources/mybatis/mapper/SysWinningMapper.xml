@@ -7,12 +7,13 @@
     <result column="award_name" property="awardName" jdbcType="VARCHAR" />
     <result column="award_level" property="awardLevel" jdbcType="VARCHAR" />
     <result column="award_image" property="awardImage" jdbcType="VARCHAR" />
-    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="award_time" property="awardTime" jdbcType="VARCHAR" />
     <result column="members" property="members" jdbcType="VARCHAR" />
+    <result column="tutor" property="tutor" jdbcType="VARCHAR" />
     <result column="profile" property="profile" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, award_name, award_level, award_image, time, members, profile
+    id, name, award_name, award_level, award_image, award_time, members, tutor, profile
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,11 +27,13 @@
   </delete>
   <insert id="insert" parameterType="com.cslg.finalab.model.SysWinning" >
     insert into sys_winning (id, name, award_name, 
-      award_level, award_image, time, 
-      members, profile)
+      award_level, award_image, award_time, 
+      members, tutor, profile
+      )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{awardName,jdbcType=VARCHAR}, 
-      #{awardLevel,jdbcType=VARCHAR}, #{awardImage,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, 
-      #{members,jdbcType=VARCHAR}, #{profile,jdbcType=VARCHAR})
+      #{awardLevel,jdbcType=VARCHAR}, #{awardImage,jdbcType=VARCHAR}, #{awardTime,jdbcType=VARCHAR}, 
+      #{members,jdbcType=VARCHAR}, #{tutor,jdbcType=VARCHAR}, #{profile,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.cslg.finalab.model.SysWinning" >
     insert into sys_winning
@@ -50,11 +53,14 @@
       <if test="awardImage != null" >
         award_image,
       </if>
-      <if test="time != null" >
-        time,
+      <if test="awardTime != null" >
+        award_time,
       </if>
       <if test="members != null" >
         members,
+      </if>
+      <if test="tutor != null" >
+        tutor,
       </if>
       <if test="profile != null" >
         profile,
@@ -76,11 +82,14 @@
       <if test="awardImage != null" >
         #{awardImage,jdbcType=VARCHAR},
       </if>
-      <if test="time != null" >
-        #{time,jdbcType=TIMESTAMP},
+      <if test="awardTime != null" >
+        #{awardTime,jdbcType=VARCHAR},
       </if>
       <if test="members != null" >
         #{members,jdbcType=VARCHAR},
+      </if>
+      <if test="tutor != null" >
+        #{tutor,jdbcType=VARCHAR},
       </if>
       <if test="profile != null" >
         #{profile,jdbcType=VARCHAR},
@@ -102,11 +111,14 @@
       <if test="awardImage != null" >
         award_image = #{awardImage,jdbcType=VARCHAR},
       </if>
-      <if test="time != null" >
-        time = #{time,jdbcType=TIMESTAMP},
+      <if test="awardTime != null" >
+        award_time = #{awardTime,jdbcType=VARCHAR},
       </if>
       <if test="members != null" >
         members = #{members,jdbcType=VARCHAR},
+      </if>
+      <if test="tutor != null" >
+        tutor = #{tutor,jdbcType=VARCHAR},
       </if>
       <if test="profile != null" >
         profile = #{profile,jdbcType=VARCHAR},
@@ -120,11 +132,13 @@
       award_name = #{awardName,jdbcType=VARCHAR},
       award_level = #{awardLevel,jdbcType=VARCHAR},
       award_image = #{awardImage,jdbcType=VARCHAR},
-      time = #{time,jdbcType=TIMESTAMP},
+      award_time = #{awardTime,jdbcType=VARCHAR},
       members = #{members,jdbcType=VARCHAR},
+      tutor = #{tutor,jdbcType=VARCHAR},
       profile = #{profile,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 
   <!-- ==================== -->
 
@@ -132,5 +146,70 @@
     SELECT <include refid="Base_Column_List"/>
     FROM sys_winning
   </select>
-  
+
+  <insert id="insertSelectiveAndGetWinningId" parameterType="com.cslg.finalab.model.SysWinning"  keyProperty="id" useGeneratedKeys="true">
+    insert into sys_winning
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="awardName != null" >
+        award_name,
+      </if>
+      <if test="awardLevel != null" >
+        award_level,
+      </if>
+      <if test="awardImage != null" >
+        award_image,
+      </if>
+      <if test="awardTime != null" >
+        award_time,
+      </if>
+      <if test="members != null" >
+        members,
+      </if>
+      <if test="tutor != null" >
+        tutor,
+      </if>
+      <if test="profile != null" >
+        profile,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="awardName != null" >
+        #{awardName,jdbcType=VARCHAR},
+      </if>
+      <if test="awardLevel != null" >
+        #{awardLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="awardImage != null" >
+        #{awardImage,jdbcType=VARCHAR},
+      </if>
+      <if test="awardTime != null" >
+        #{awardTime,jdbcType=VARCHAR},
+      </if>
+      <if test="members != null" >
+        #{members,jdbcType=VARCHAR},
+      </if>
+      <if test="tutor != null" >
+        #{tutor,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null" >
+        #{profile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateAwardImageByPrimaryKey">
+    UPDATE sys_winning SET award_image = #{awardImage} WHERE id = #{id}
+  </update>
 </mapper>

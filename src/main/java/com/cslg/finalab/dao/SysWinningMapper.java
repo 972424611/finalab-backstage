@@ -2,6 +2,7 @@ package com.cslg.finalab.dao;
 
 import com.cslg.finalab.model.SysWinning;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,4 +24,9 @@ public interface SysWinningMapper {
 
     List<SysWinning> selectAll();
 
+    int countWinningByName(String name);
+
+    void insertSelectiveAndGetWinningId(SysWinning sysWinning);
+
+    void updateAwardImageByPrimaryKey(@Param("awardImage") String awardImage, @Param("id") Integer winningId);
 }

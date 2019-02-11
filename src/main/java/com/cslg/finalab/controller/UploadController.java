@@ -72,4 +72,17 @@ public class UploadController {
         uploadService.batchUploadMemoryImage(fileList, remark);
         return JsonData.success();
     }
+
+    /**
+     * 上传获奖图片
+     */
+    @ResponseBody
+    @RequestMapping(value = "/image/winning")
+    public JsonData winning(HttpServletRequest request) {
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile file = multipartRequest.getFile("image");
+        String id = request.getParameter("id");
+        uploadService.uploadWinningImage(file, Integer.valueOf(id));
+        return JsonData.success();
+    }
 }

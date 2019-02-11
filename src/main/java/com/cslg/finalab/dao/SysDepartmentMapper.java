@@ -19,5 +19,5 @@ public interface SysDepartmentMapper {
 
     // ===================================
 
-    SysDepartment selectByDepartMentName(String department);
+    SysDepartment selectByDepartmentName(String department);
 }

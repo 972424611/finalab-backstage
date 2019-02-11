@@ -1,7 +1,11 @@
 package com.cslg.finalab.service.impl;
 
+import com.cslg.finalab.common.BeanValidator;
 import com.cslg.finalab.dao.SysWinningMapper;
+import com.cslg.finalab.enums.WinningEnum;
+import com.cslg.finalab.exception.WinningException;
 import com.cslg.finalab.model.SysWinning;
+import com.cslg.finalab.param.WinningParam;
 import com.cslg.finalab.service.WinningService;
 import com.cslg.finalab.vo.WinningVo;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +31,6 @@ public class WinningServiceImpl implements WinningService {
         List<SysWinning> sysWinningList = sysWinningMapper.selectAll();
         List<WinningVo> winningVoList = new ArrayList<>();
         for(SysWinning sysWinning : sysWinningList) {
-
             WinningVo winningVo = new WinningVo();
             BeanUtils.copyProperties(sysWinning, winningVo, "award_image");
             winningVo.setAwardImage(serverAddress + sysWinning.getAwardImage());
@@ -39,5 +42,14 @@ public class WinningServiceImpl implements WinningService {
             Collections.shuffle(winningVoList);
         }
         return winningVoList;
+    }
+
+    @Override
+    public int saveWinning(WinningParam winningParam) {
+        BeanValidator.check(winningParam);
+        SysWinning sysWinning = new SysWinning();
+        BeanUtils.copyProperties(winningParam, sysWinning);
+        sysWinningMapper.insertSelectiveAndGetWinningId(sysWinning);
+        return sysWinning.getId();
     }
 }
