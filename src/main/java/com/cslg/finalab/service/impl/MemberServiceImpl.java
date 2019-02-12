@@ -199,16 +199,17 @@ public class MemberServiceImpl implements MemberService {
             SysMember oldSysMember = sysMemberMapper.selectByPrimaryKey(memberParam.getId());
             // 如果学号有变化，则相应的成员的图片名称需要修改，因为图片名称以学号命名
             String headPortrait = oldSysMember.getHeadPortrait();
+            // 如果该成员原来就有照片
             if(StringUtils.isNotBlank(headPortrait)) {
                 File oldFile = new File(headPortrait);
                 String format = FileOperation.checkFileNameAndGetFormat(oldFile.getName());
-                String newPathName = oldFile.getParent() + File.separator + stuId + format;
-                File newFile = new File(newPathName);
+                String newHeadPortrait = oldFile.getParent() + File.separator + stuId + format;
+                File newFile = new File(newHeadPortrait);
                 if(!oldFile.renameTo(newFile)) {
                     throw new FileException(FileEnum.FILE_RENAME_FAIL);
                 }
+                newSysMember.setHeadPortrait(newHeadPortrait);
             }
-
         }
         if(StringUtils.isNotBlank(memberParam.getCollege())) {
             // 查询学院

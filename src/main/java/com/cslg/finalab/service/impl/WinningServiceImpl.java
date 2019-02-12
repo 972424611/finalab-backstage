@@ -67,7 +67,6 @@ public class WinningServiceImpl implements WinningService {
     public void updateWinningById(WinningParam winningParam) {
         SysWinning sysWinning = new SysWinning();
         BeanUtils.copyProperties(winningParam, sysWinning);
-
         sysWinningMapper.updateByPrimaryKeySelective(sysWinning);
     }
 }

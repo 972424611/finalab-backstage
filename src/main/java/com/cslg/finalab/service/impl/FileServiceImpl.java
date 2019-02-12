@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -63,7 +64,8 @@ public class FileServiceImpl implements FileService {
         FileOperation.checkImageSize(multipartFile.getSize());
         String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + project/ + 100/ + coverImage.jpg
-        String pathName = imageAddress + "project/" + projectId + "/coverImage" + format;
+        String pathName = imageAddress + "project" + File.separator +
+                projectId + File.separator + "coverImage" + format;
         FileOperation.writeToFile(pathName, multipartFile);
         sysProjectMapper.updateCoverImageByPrimaryKey(pathName, projectId);
     }
@@ -81,7 +83,8 @@ public class FileServiceImpl implements FileService {
             FileOperation.checkImageSize(multipartFiles[i].getSize());
             String format = FileOperation.checkFileNameAndGetFormat(multipartFiles[i].getOriginalFilename());
             // eg: /Users/twilight/IdeaProjects/finalab/image/ + project/ + 100/ + image1.jpg
-            String pathName = imageAddress + "project/" + projectId + "/image" + (i + 1) + format;
+            String pathName = imageAddress + "project" + File.separator +
+                    projectId + File.separator + "image" + (i + 1) + format;
             pathNameList.add(pathName);
             paths.append(pathName);
             if(i != multipartFiles.length - 1) {
@@ -104,8 +107,8 @@ public class FileServiceImpl implements FileService {
         FileOperation.checkImageSize(multipartFile.getSize());
         String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + member/ + 2017/ + 201650080528.jpg
-        String pathName = imageAddress + "member" + "/" +
-                sysMember.getGrade() + "/" +
+        String pathName = imageAddress + "member" + File.separator +
+                sysMember.getGrade() + File.separator +
                 sysMember.getStuId() + format;
         FileOperation.writeToFile(pathName, multipartFile);
         sysMemberMapper.updateHeadPortraitByPrimaryKey(pathName, memberId);
@@ -132,8 +135,8 @@ public class FileServiceImpl implements FileService {
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             // eg: /Users/twilight/IdeaProjects/finalab/image/ + memory/ + 2016/ + 凡路年会/ + 1.jpg
-            String pathName = imageAddress + "memory" + "/" +
-                    year + "/" + remark + "/" + (i + 1) + format;
+            String pathName = imageAddress + "memory" + File.separator +
+                    year + File.separator + remark + File.separator + (i + 1) + format;
             pathNameList.add(pathName);
             sysMemory.setRemark(remark);
             sysMemory.setPhoto(pathName);
@@ -156,8 +159,8 @@ public class FileServiceImpl implements FileService {
         FileOperation.checkImageSize(multipartFile.getSize());
         String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + winning/ + 盲杖/ + 中国大学生计算机设计大赛.jpg
-        String pathName = imageAddress + "winning" + "/" +
-                sysWinning.getName() + "/" +
+        String pathName = imageAddress + "winning" + File.separator +
+                sysWinning.getName() + File.separator +
                 sysWinning.getAwardName() + format;
         FileOperation.writeToFile(pathName, multipartFile);
         sysWinningMapper.updateAwardImageByPrimaryKey(pathName, winningId);

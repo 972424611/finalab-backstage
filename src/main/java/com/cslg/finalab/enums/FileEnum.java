@@ -23,8 +23,9 @@ public enum FileEnum {
 
     DELETE_FILE_FAILED(404, "删除文件失败"),
 
-    FILE_RENAME_FAIL(405, "文件重命名失败");
+    FILE_RENAME_FAIL(405, "文件重命名失败"),
 
+    DIRECTORY_RENAME_FAIL(406, "目录重命名失败");
     private Integer code;
 
     private String message;
