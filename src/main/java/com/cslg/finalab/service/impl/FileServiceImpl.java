@@ -159,9 +159,13 @@ public class FileServiceImpl implements FileService {
         FileOperation.checkImageSize(multipartFile.getSize());
         String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + winning/ + 盲杖/ + 中国大学生计算机设计大赛.jpg
+        /*
         String pathName = imageAddress + "winning" + File.separator +
                 sysWinning.getName() + File.separator +
                 sysWinning.getAwardName() + format;
+        */
+        // eg: /Users/twilight/IdeaProjects/finalab/image/ + winning/ + winningId.jpg
+        String pathName = imageAddress + "winning" + File.separator + winningId + format;
         FileOperation.writeToFile(pathName, multipartFile);
         sysWinningMapper.updateAwardImageByPrimaryKey(pathName, winningId);
     }
