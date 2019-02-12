@@ -21,7 +21,9 @@ public enum FileEnum {
     // 服务器
     SERVER_BUSY(403, "服务器繁忙"),
 
-    DELETE_FILE_FAILED(404, "删除文件失败");
+    DELETE_FILE_FAILED(404, "删除文件失败"),
+
+    FILE_RENAME_FAIL(405, "文件重命名失败");
 
     private Integer code;
 

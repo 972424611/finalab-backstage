@@ -8,7 +8,9 @@ import com.cslg.finalab.dao.SysCollegeMapper;
 import com.cslg.finalab.dao.SysDepartmentMapper;
 import com.cslg.finalab.dao.SysLevelMapper;
 import com.cslg.finalab.dao.SysMemberMapper;
+import com.cslg.finalab.enums.FileEnum;
 import com.cslg.finalab.enums.MemberEnum;
+import com.cslg.finalab.exception.FileException;
 import com.cslg.finalab.exception.MemberException;
 import com.cslg.finalab.model.*;
 import com.cslg.finalab.param.MemberParam;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -143,6 +146,10 @@ public class MemberServiceImpl implements MemberService {
         checkMember(memberParam);
         SysMember sysMember = new SysMember();
         BeanUtils.copyProperties(memberParam, sysMember);
+        // 检查学号是否重复
+        if(sysMemberMapper.countMemberByStuId(memberParam.getStuId()) > 0) {
+            throw new MemberException(MemberEnum.MEMBER_ALREADY_EXISTS);
+        }
         // 查询学院
         SysCollege sysCollege = sysCollegeMapper.selectByCollegeName(memberParam.getCollege());
         sysMember.setCollege(sysCollege.getId());
@@ -159,7 +166,6 @@ public class MemberServiceImpl implements MemberService {
         // 查询成员级别
         SysLevel sysLevel = sysLevelMapper.selectByLevelName(memberParam.getLevel());
         sysMember.setLevelId(sysLevel.getId());
-        // TODO 照片还未处理
         sysMemberMapper.insert(sysMember);
     }
 
@@ -180,37 +186,50 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updateMemberById(MemberParam memberParam) {
-        SysMember sysMember = new SysMember();
-        sysMember.setId(memberParam.getId());
-        BeanUtils.copyProperties(memberParam, sysMember);
+        SysMember newSysMember = new SysMember();
+        newSysMember.setId(memberParam.getId());
+        BeanUtils.copyProperties(memberParam, newSysMember);
         if(StringUtils.isNotBlank(memberParam.getStuId())) {
             // 检查学号是否重复
             String stuId = memberParam.getStuId();
             if(sysMemberMapper.countMemberByStuId(stuId) > 0) {
                 throw new MemberException(MemberEnum.MEMBER_ALREADY_EXISTS);
             }
-            sysMember.setStuId(memberParam.getStuId());
+            newSysMember.setStuId(memberParam.getStuId());
+            SysMember oldSysMember = sysMemberMapper.selectByPrimaryKey(memberParam.getId());
+            // 如果学号有变化，则相应的成员的图片名称需要修改，因为图片名称以学号命名
+            String headPortrait = oldSysMember.getHeadPortrait();
+            if(StringUtils.isNotBlank(headPortrait)) {
+                File oldFile = new File(headPortrait);
+                String format = FileOperation.checkFileNameAndGetFormat(oldFile.getName());
+                String newPathName = oldFile.getParent() + File.separator + stuId + format;
+                File newFile = new File(newPathName);
+                if(!oldFile.renameTo(newFile)) {
+                    throw new FileException(FileEnum.FILE_RENAME_FAIL);
+                }
+            }
+
         }
         if(StringUtils.isNotBlank(memberParam.getCollege())) {
             // 查询学院
             SysCollege sysCollege = sysCollegeMapper.selectByCollegeName(memberParam.getCollege());
-            sysMember.setCollege(sysCollege.getId());
+            newSysMember.setCollege(sysCollege.getId());
         }
         if(StringUtils.isNotBlank(memberParam.getDepartment())) {
             // 查询部门
             SysDepartment department = sysDepartmentMapper.selectByDepartmentName(memberParam.getDepartment());
-            sysMember.setDepartmentId(department.getId());
+            newSysMember.setDepartmentId(department.getId());
         }
         if(StringUtils.isNotBlank(memberParam.getLevel())) {
             // 查询成员级别
             SysLevel sysLevel = sysLevelMapper.selectByLevelName(memberParam.getLevel());
-            sysMember.setLevelId(sysLevel.getId());
+            newSysMember.setLevelId(sysLevel.getId());
         }
         // 默认把邮箱设置为qq邮箱
         if(StringUtils.isNotBlank(memberParam.getQq()) && StringUtils.isBlank(memberParam.getEmail())) {
-            sysMember.setEmail(memberParam.getQq() + "@qq.com");
+            newSysMember.setEmail(memberParam.getQq() + "@qq.com");
         }
-        sysMemberMapper.updateByPrimaryKeySelective(sysMember);
+        sysMemberMapper.updateByPrimaryKeySelective(newSysMember);
     }
 
 }
