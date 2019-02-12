@@ -3,6 +3,7 @@ package com.cslg.finalab.service.impl;
 import com.cslg.finalab.beans.PageQuery;
 import com.cslg.finalab.beans.PageResult;
 import com.cslg.finalab.common.BeanValidator;
+import com.cslg.finalab.common.FileOperation;
 import com.cslg.finalab.dao.SysCollegeMapper;
 import com.cslg.finalab.dao.SysDepartmentMapper;
 import com.cslg.finalab.dao.SysLevelMapper;
@@ -151,6 +152,9 @@ public class MemberServiceImpl implements MemberService {
         }
         // 查询部门
         SysDepartment department = sysDepartmentMapper.selectByDepartmentName(memberParam.getDepartment());
+        if(department == null) {
+            throw new MemberException(MemberEnum.DEPARTMENT_NOT_FOUND);
+        }
         sysMember.setDepartmentId(department.getId());
         // 查询成员级别
         SysLevel sysLevel = sysLevelMapper.selectByLevelName(memberParam.getLevel());
@@ -163,6 +167,13 @@ public class MemberServiceImpl implements MemberService {
     public void deleteMemberById(Integer[] memberIds) {
         if(memberIds == null || memberIds.length == 0) {
             return;
+        }
+        // 删除该成员的照片
+        List<SysMember> sysMemberList = sysMemberMapper.selectByPrimaryKeys(memberIds);
+        for(SysMember sysMember : sysMemberList) {
+            if(StringUtils.isNotBlank(sysMember.getHeadPortrait())) {
+                FileOperation.deleteFile(sysMember.getHeadPortrait());
+            }
         }
         sysMemberMapper.batchDeleteByPrimaryKey(memberIds);
     }

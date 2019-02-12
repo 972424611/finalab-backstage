@@ -1,9 +1,11 @@
 package com.cslg.finalab.service.impl;
 
 import com.cslg.finalab.common.BeanValidator;
+import com.cslg.finalab.common.FileOperation;
 import com.cslg.finalab.dao.SysProjectMapper;
 import com.cslg.finalab.enums.ProjectEnum;
 import com.cslg.finalab.exception.ProjectException;
+import com.cslg.finalab.model.SysProject;
 import com.cslg.finalab.model.SysProjectWithBLOBs;
 import com.cslg.finalab.param.ProjectParam;
 import com.cslg.finalab.service.ProjectService;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.*;
 
 @Service
@@ -97,6 +100,14 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProjectById(Integer[] projectIds) {
         if(projectIds == null || projectIds.length == 0) {
             return;
+        }
+        List<SysProject> sysProjectList = sysProjectMapper.selectByPrimaryKeys(projectIds);
+        // 删除该项目的相关图片
+        for(SysProject sysProject : sysProjectList) {
+            if(StringUtils.isNotBlank(sysProject.getCoverImage())) {
+                File file = new File(sysProject.getCoverImage());
+                FileOperation.deleteDirectory(file.getParentFile().getAbsolutePath());
+            }
         }
         sysProjectMapper.batchDeleteByPrimaryKey(projectIds);
     }

@@ -1,22 +1,20 @@
 package com.cslg.finalab.service.impl;
 
+import com.cslg.finalab.common.FileOperation;
 import com.cslg.finalab.dao.SysMemberMapper;
 import com.cslg.finalab.dao.SysMemoryMapper;
 import com.cslg.finalab.dao.SysProjectMapper;
 import com.cslg.finalab.dao.SysWinningMapper;
 import com.cslg.finalab.enums.MemberEnum;
 import com.cslg.finalab.enums.ProjectEnum;
-import com.cslg.finalab.enums.UploadEnum;
 import com.cslg.finalab.enums.WinningEnum;
 import com.cslg.finalab.exception.MemberException;
 import com.cslg.finalab.exception.ProjectException;
-import com.cslg.finalab.exception.UploadException;
 import com.cslg.finalab.exception.WinningException;
 import com.cslg.finalab.model.SysMember;
 import com.cslg.finalab.model.SysMemory;
 import com.cslg.finalab.model.SysWinning;
-import com.cslg.finalab.service.UploadService;
-import com.google.common.collect.Sets;
+import com.cslg.finalab.service.FileService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -34,20 +30,10 @@ import java.util.*;
  * @date 2019-02-06 14:41
  */
 @Service
-public class UploadServiceImpl implements UploadService {
+public class FileServiceImpl implements FileService {
 
     @Value("${image.address}")
     private String imageAddress;
-
-    /**  图片最大大小 */
-    private static final long MAXSIZE = 5242880;
-
-    private static Set<String> imageFormatSet = Sets.newHashSet();
-
-    static {
-        imageFormatSet.add(".jpg");
-        imageFormatSet.add(".png");
-    }
 
     private final SysProjectMapper sysProjectMapper;
 
@@ -58,62 +44,15 @@ public class UploadServiceImpl implements UploadService {
     private final SysWinningMapper sysWinningMapper;
 
     @Autowired
-    public UploadServiceImpl(SysProjectMapper sysProjectMapper, SysMemberMapper sysMemberMapper,
-                             SysMemoryMapper sysMemoryMapper, SysWinningMapper sysWinningMapper) {
+    public FileServiceImpl(SysProjectMapper sysProjectMapper, SysMemberMapper sysMemberMapper,
+                           SysMemoryMapper sysMemoryMapper, SysWinningMapper sysWinningMapper) {
         this.sysProjectMapper = sysProjectMapper;
         this.sysMemberMapper = sysMemberMapper;
         this.sysMemoryMapper = sysMemoryMapper;
         this.sysWinningMapper = sysWinningMapper;
     }
 
-    private File createFile(String pathName) {
-        File file = new File(pathName);
-        if(!file.getParentFile().exists()) {
-            if(!file.getParentFile().mkdirs()) {
-                throw new UploadException(UploadEnum.CREATE_FILE_FAILED);
-            }
-        }
-        if(!file.exists()) {
-            try {
-                if(file.createNewFile()) {
-                    return file;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new UploadException(UploadEnum.CREATE_FILE_FAILED);
-            }
-        }
-        return file;
-    }
 
-    private void checkImageSize(long size) {
-        // 设置上传的最大值5MB，5*1024*1024
-        if(size > MAXSIZE) {
-            throw new UploadException(UploadEnum.IMAGE_TOO_LARGE);
-        }
-    }
-
-    private String checkFileNameAndGetFormat(String fileName) {
-        if(StringUtils.isBlank(fileName)) {
-            throw new UploadException(UploadEnum.IMAGE_FORMAT_ERROR);
-        }
-        String format = fileName.substring(fileName.lastIndexOf("."));
-        // 检查格式
-        if(!imageFormatSet.contains(format)) {
-            throw new UploadException(UploadEnum.IMAGE_FORMAT_ERROR);
-        }
-        return format;
-    }
-
-    private void writeToFile(String pathName, MultipartFile multipartFile) {
-        File file = createFile(pathName);
-        try {
-            multipartFile.transferTo(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new UploadException(UploadEnum.SERVER_BUSY);
-        }
-    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -121,11 +60,11 @@ public class UploadServiceImpl implements UploadService {
         if(sysProjectMapper.countProjectByPrimaryKey(projectId) != 1) {
             throw new ProjectException(ProjectEnum.PROJECT_NOT_FOUND);
         }
-        checkImageSize(multipartFile.getSize());
-        String format = checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
+        FileOperation.checkImageSize(multipartFile.getSize());
+        String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + project/ + 100/ + coverImage.jpg
         String pathName = imageAddress + "project/" + projectId + "/coverImage" + format;
-        writeToFile(pathName, multipartFile);
+        FileOperation.writeToFile(pathName, multipartFile);
         sysProjectMapper.updateCoverImageByPrimaryKey(pathName, projectId);
     }
 
@@ -139,8 +78,8 @@ public class UploadServiceImpl implements UploadService {
         // 写入文件要和检查文件格式分开，所以创建一个数组保存要写入的路径
         List<String> pathNameList = new ArrayList<>();
         for(int i = 0; i < multipartFiles.length; i++) {
-            checkImageSize(multipartFiles[i].getSize());
-            String format = checkFileNameAndGetFormat(multipartFiles[i].getOriginalFilename());
+            FileOperation.checkImageSize(multipartFiles[i].getSize());
+            String format = FileOperation.checkFileNameAndGetFormat(multipartFiles[i].getOriginalFilename());
             // eg: /Users/twilight/IdeaProjects/finalab/image/ + project/ + 100/ + image1.jpg
             String pathName = imageAddress + "project/" + projectId + "/image" + (i + 1) + format;
             pathNameList.add(pathName);
@@ -150,7 +89,7 @@ public class UploadServiceImpl implements UploadService {
             }
         }
         for(int i = 0; i < pathNameList.size(); i++) {
-            writeToFile(pathNameList.get(i), multipartFiles[i]);
+            FileOperation.writeToFile(pathNameList.get(i), multipartFiles[i]);
         }
         sysProjectMapper.updateImagesByPrimaryKey(paths.toString(), projectId);
     }
@@ -162,13 +101,13 @@ public class UploadServiceImpl implements UploadService {
         if(sysMember == null) {
             throw new MemberException(MemberEnum.MEMBER_NOT_FOUND);
         }
-        checkImageSize(multipartFile.getSize());
-        String format = checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
+        FileOperation.checkImageSize(multipartFile.getSize());
+        String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + member/ + 2017/ + 201650080528.jpg
         String pathName = imageAddress + "member" + "/" +
                 sysMember.getGrade() + "/" +
                 sysMember.getStuId() + format;
-        writeToFile(pathName, multipartFile);
+        FileOperation.writeToFile(pathName, multipartFile);
         sysMemberMapper.updateHeadPortraitByPrimaryKey(pathName, memberId);
     }
 
@@ -188,8 +127,8 @@ public class UploadServiceImpl implements UploadService {
         for(int i = 0; i < fileList.size(); i++) {
             SysMemory sysMemory = new SysMemory();
             MultipartFile multipartFile = fileList.get(i);
-            checkImageSize(multipartFile.getSize());
-            String format = checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
+            FileOperation.checkImageSize(multipartFile.getSize());
+            String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             // eg: /Users/twilight/IdeaProjects/finalab/image/ + memory/ + 2016/ + 凡路年会/ + 1.jpg
@@ -202,7 +141,7 @@ public class UploadServiceImpl implements UploadService {
             sysMemoryList.add(sysMemory);
         }
         for(int i = 0; i < pathNameList.size(); i++) {
-            writeToFile(pathNameList.get(i), fileList.get(i));
+            FileOperation.writeToFile(pathNameList.get(i), fileList.get(i));
         }
         sysMemoryMapper.batchInsert(sysMemoryList);
     }
@@ -214,13 +153,13 @@ public class UploadServiceImpl implements UploadService {
         if(sysWinning == null) {
             throw new WinningException(WinningEnum.WINNING_NOT_FOUND);
         }
-        checkImageSize(multipartFile.getSize());
-        String format = checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
+        FileOperation.checkImageSize(multipartFile.getSize());
+        String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + winning/ + 盲杖/ + 中国大学生计算机设计大赛.jpg
         String pathName = imageAddress + "winning" + "/" +
                 sysWinning.getName() + "/" +
                 sysWinning.getAwardName() + format;
-        writeToFile(pathName, multipartFile);
+        FileOperation.writeToFile(pathName, multipartFile);
         sysWinningMapper.updateAwardImageByPrimaryKey(pathName, winningId);
     }
 

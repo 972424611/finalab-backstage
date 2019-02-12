@@ -247,11 +247,11 @@
     </trim>
   </insert>
 
-  <update id="updateImagesByProjectId">
+  <update id="updateImagesByPrimaryKey">
     UPDATE sys_project SET images = #{images} WHERE id = #{id}
   </update>
 
-  <update id="updateCoverImageByProjectId">
+  <update id="updateCoverImageByPrimaryKey">
     UPDATE sys_project SET cover_image = #{coverImage} WHERE id = #{id}
   </update>
 
@@ -265,6 +265,14 @@
       #{id}
     </foreach>
   </delete>
+
+  <select id="selectByPrimaryKeys" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/> FROM sys_project
+    WHERE id IN
+    <foreach collection="projectIds" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </select>
 
 
 </mapper>

@@ -42,4 +42,6 @@ public interface SysMemberMapper {
     int countMemberPrimaryKey(@Param("id") Integer memberId);
 
     void updateHeadPortraitByPrimaryKey(@Param("headPortrait") String pathName, @Param("id") Integer memberId);
+
+    List<SysMember> selectByPrimaryKeys(@Param("memberIds") Integer[] memberIds);
 }

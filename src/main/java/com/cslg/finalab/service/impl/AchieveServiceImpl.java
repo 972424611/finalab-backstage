@@ -1,6 +1,7 @@
 package com.cslg.finalab.service.impl;
 
 import com.cslg.finalab.common.BeanValidator;
+import com.cslg.finalab.common.FileOperation;
 import com.cslg.finalab.dao.SysAchieveMapper;
 import com.cslg.finalab.dao.SysMemberMapper;
 import com.cslg.finalab.enums.AchieveEnum;

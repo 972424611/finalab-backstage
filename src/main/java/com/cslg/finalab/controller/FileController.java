@@ -1,7 +1,7 @@
 package com.cslg.finalab.controller;
 
 import com.cslg.finalab.beans.JsonData;
-import com.cslg.finalab.service.UploadService;
+import com.cslg.finalab.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +20,10 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/upload")
-public class UploadController {
+public class FileController {
 
     @Autowired
-    private UploadService uploadService;
+    private FileService fileService;
 
     /**
      * 上传项目封面图片
@@ -32,7 +32,7 @@ public class UploadController {
     @RequestMapping(value = "/image/project")
     public JsonData project(@RequestParam("image") MultipartFile file,
                             @RequestParam("id") Integer id) {
-        uploadService.uploadProjectImage(file, id);
+        fileService.uploadProjectImage(file, id);
         return JsonData.success();
     }
 
@@ -43,7 +43,7 @@ public class UploadController {
     @RequestMapping(value = "/image/projectBatch")
     public JsonData projectBatch(@RequestParam("images") MultipartFile[] files,
                                  @RequestParam("id") Integer id) {
-        uploadService.batchUploadProjectImage(files, id);
+        fileService.batchUploadProjectImage(files, id);
         return JsonData.success();
     }
 
@@ -56,7 +56,7 @@ public class UploadController {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("image");
         String id = request.getParameter("id");
-        uploadService.uploadMemberImage(file, Integer.valueOf(id));
+        fileService.uploadMemberImage(file, Integer.valueOf(id));
         return JsonData.success();
     }
 
@@ -69,7 +69,7 @@ public class UploadController {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         List<MultipartFile> fileList = multipartRequest.getFiles("images");
         String remark = request.getParameter("remark");
-        uploadService.batchUploadMemoryImage(fileList, remark);
+        fileService.batchUploadMemoryImage(fileList, remark);
         return JsonData.success();
     }
 
@@ -82,7 +82,7 @@ public class UploadController {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("image");
         String id = request.getParameter("id");
-        uploadService.uploadWinningImage(file, Integer.valueOf(id));
+        fileService.uploadWinningImage(file, Integer.valueOf(id));
         return JsonData.success();
     }
 }

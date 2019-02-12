@@ -262,4 +262,12 @@
   <update id="updateHeadPortraitByPrimaryKey">
     UPDATE sys_member SET head_portrait = #{headPortrait} WHERE id = #{id}
   </update>
+
+  <select id="selectByPrimaryKeys" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/> FROM sys_member
+    WHERE id IN
+    <foreach collection="memberIds" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </select>
 </mapper>

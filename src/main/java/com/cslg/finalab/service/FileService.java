@@ -8,7 +8,7 @@ import java.util.List;
  * @author Twilight
  * @date 2019-02-06 13:56
  */
-public interface UploadService {
+public interface FileService {
 
     /**
      * 上传项目封面图片

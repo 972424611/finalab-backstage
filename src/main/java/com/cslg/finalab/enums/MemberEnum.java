@@ -16,7 +16,9 @@ public enum MemberEnum {
     MEMBER_ALREADY_EXISTS(201, "学号重复"),
 
     // 成员不存在
-    MEMBER_NOT_FOUND(202, "找不到该成员");
+    MEMBER_NOT_FOUND(202, "找不到该成员"),
+
+    DEPARTMENT_NOT_FOUND(203, "部门信息输入有误");
 
     private Integer code;
 

@@ -40,4 +40,6 @@ public interface SysProjectMapper {
     int countProjectByPrimaryKey(@Param("id") int projectId);
 
     void batchDeleteByPrimaryKey(@Param("projectIds") Integer[] projectIds);
+
+    List<SysProject> selectByPrimaryKeys(@Param("projectIds") Integer[] projectIds);
 }

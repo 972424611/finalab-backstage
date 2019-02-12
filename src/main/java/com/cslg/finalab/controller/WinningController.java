@@ -41,10 +41,25 @@ public class WinningController {
         return JsonData.success(resultMap);
     }
 
+    /**
+     * 删除获奖信息
+     * @param winningIds 获奖信息id数组
+     */
     @ResponseBody
     @RequestMapping(value = "/delete")
     public JsonData delete(@RequestParam(value = "ids") Integer[] winningIds) {
         winningService.deleteWinningById(winningIds);
+        return JsonData.success();
+    }
+
+    /**
+     * 更新获奖信息
+     * @param winningParam 更新的信息
+     */
+    @ResponseBody
+    @RequestMapping(value = "/update")
+    public JsonData update(WinningParam winningParam) {
+        winningService.updateWinningById(winningParam);
         return JsonData.success();
     }
 }

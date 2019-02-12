@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,5 +60,14 @@ public class WinningServiceImpl implements WinningService {
             return;
         }
         sysWinningMapper.batchDeleteByPrimaryKey(winningIds);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateWinningById(WinningParam winningParam) {
+        SysWinning sysWinning = new SysWinning();
+        BeanUtils.copyProperties(winningParam, sysWinning);
+
+        sysWinningMapper.updateByPrimaryKeySelective(sysWinning);
     }
 }

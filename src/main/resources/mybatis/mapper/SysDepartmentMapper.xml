@@ -57,7 +57,7 @@
   </update>
 
   <!-- ========================= -->
-  <select id="selectByDepartMentName" resultMap="BaseResultMap">
+  <select id="selectByDepartmentName" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" />
     FROM sys_department WHERE name = #{department}
