@@ -82,7 +82,7 @@
 
   <!-- ==================== -->
 
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectAllAchieve" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/>
     FROM sys_achieve
   </select>
@@ -97,4 +97,8 @@
       #{id}
     </foreach>
   </delete>
+
+  <select id="countAllAchieve" resultType="Integer">
+    SELECT COUNT(id) FROM sys_achieve
+  </select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.cslg.finalab.service.impl;
 
+import com.cslg.finalab.beans.PageQuery;
+import com.cslg.finalab.beans.PageResult;
 import com.cslg.finalab.common.BeanValidator;
 import com.cslg.finalab.common.FileOperation;
 import com.cslg.finalab.dao.SysAchieveMapper;
@@ -38,7 +40,7 @@ public class AchieveServiceImpl implements AchieveService {
 
     @Override
     public List<AchieveVo> getAllAchieveList() {
-        List<SysAchieve> sysAchieveList = sysAchieveMapper.selectAll();
+        List<SysAchieve> sysAchieveList = sysAchieveMapper.selectAllAchieve();
         List<AchieveVo> achieveVoList = new ArrayList<>();
         for(SysAchieve sysAchieve : sysAchieveList) {
             AchieveVo achieveVo = new AchieveVo();
@@ -53,6 +55,28 @@ public class AchieveServiceImpl implements AchieveService {
             Collections.shuffle(achieveVoList);
         }
         return achieveVoList;
+    }
+
+    @Override
+    public PageResult<AchieveVo> getAllAchieveList(PageQuery pageQuery) {
+        int count = sysAchieveMapper.countAllAchieve();
+        if(count < 1) {
+            return new PageResult<>();
+        }
+        List<SysAchieve> sysAchieveList = sysAchieveMapper.selectAllAchieve(pageQuery);
+        List<AchieveVo> achieveVoList = new ArrayList<>();
+        for(SysAchieve sysAchieve : sysAchieveList) {
+            AchieveVo achieveVo = new AchieveVo();
+            SysMember sysMember = sysMemberMapper.selectByStuId(sysAchieve.getStuId());
+            BeanUtils.copyProperties(sysAchieve, achieveVo);
+            achieveVo.setHeadPortrait(serverAddress + sysMember.getHeadPortrait());
+            achieveVo.setName(sysMember.getName());
+            achieveVoList.add(achieveVo);
+        }
+        PageResult<AchieveVo> pageResult = new PageResult<>();
+        pageResult.setList(achieveVoList);
+        pageResult.setTotal(count);
+        return pageResult;
     }
 
     @Override

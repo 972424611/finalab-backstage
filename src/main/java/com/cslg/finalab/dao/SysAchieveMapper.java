@@ -1,5 +1,6 @@
 package com.cslg.finalab.dao;
 
+import com.cslg.finalab.beans.PageQuery;
 import com.cslg.finalab.model.SysAchieve;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,9 +23,13 @@ public interface SysAchieveMapper {
 
     // -----------------------------
 
-    List<SysAchieve> selectAll();
+    List<SysAchieve> selectAllAchieve();
 
     int countAchieveByStuId(String stuId);
 
     void batchDeleteByPrimaryKey(@Param("achieveIds") Integer[] achieveIds);
+
+    int countAllAchieve();
+
+    List<SysAchieve> selectAllAchieve(@Param("pageQuery") PageQuery pageQuery);
 }
