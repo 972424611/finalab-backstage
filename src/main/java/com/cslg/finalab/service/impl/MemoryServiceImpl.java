@@ -3,15 +3,14 @@ package com.cslg.finalab.service.impl;
 import com.cslg.finalab.dao.SysMemoryMapper;
 import com.cslg.finalab.model.SysMemory;
 import com.cslg.finalab.service.MemoryService;
-import com.cslg.finalab.vo.MemoryVo;
+import com.cslg.finalab.vo.memory.MemoryTreeVo;
+import com.cslg.finalab.vo.memory.MemoryVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MemoryServiceImpl implements MemoryService {
@@ -41,5 +40,33 @@ public class MemoryServiceImpl implements MemoryService {
             }
         }
         return memoryVoList;
+    }
+
+    @Override
+    public Map<Integer, Map<String, List<String>>> getAllMemoryList() {
+        List<SysMemory> sysMemoryList = sysMemoryMapper.selectAll();
+        Map<Integer, Map<String, List<String>>> map = new HashMap<>();
+        for(SysMemory sysMemory : sysMemoryList) {
+            Date date = sysMemory.getTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            int year = calendar.get(Calendar.YEAR);
+            if(!map.containsKey(year)) {
+                map.put(year, new HashMap<>());
+                Map<String, List<String>> remarkMap = new HashMap<>();
+                remarkMap.put(sysMemory.getRemark(), new ArrayList<>());
+                remarkMap.get(sysMemory.getRemark()).add(serverAddress + sysMemory.getPhoto());
+                map.put(year, remarkMap);
+            } else {
+                String remark = sysMemory.getRemark();
+                Map<String, List<String>> remarkMap =  map.get(year);
+                if(!remarkMap.containsKey(remark)) {
+                    remarkMap.put(remark, new ArrayList<>());
+                }
+                remarkMap.get(remark).add(serverAddress + sysMemory.getPhoto());
+                map.put(year, remarkMap);
+            }
+        }
+        return map;
     }
 }

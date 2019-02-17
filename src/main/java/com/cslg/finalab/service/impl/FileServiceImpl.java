@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -132,8 +133,8 @@ public class FileServiceImpl implements FileService {
             MultipartFile multipartFile = fileList.get(i);
             FileOperation.checkImageSize(multipartFile.getSize());
             String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            int year = localDateTime.getYear();
             // eg: /Users/twilight/IdeaProjects/finalab/image/ + memory/ + 2016/ + 凡路年会/ + 1.jpg
             String pathName = imageAddress + "memory" + File.separator +
                     year + File.separator + remark + File.separator + (i + 1) + format;
