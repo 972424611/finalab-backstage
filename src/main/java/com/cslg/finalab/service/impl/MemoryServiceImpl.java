@@ -3,8 +3,7 @@ package com.cslg.finalab.service.impl;
 import com.cslg.finalab.dao.SysMemoryMapper;
 import com.cslg.finalab.model.SysMemory;
 import com.cslg.finalab.service.MemoryService;
-import com.cslg.finalab.vo.memory.MemoryTreeVo;
-import com.cslg.finalab.vo.memory.MemoryVo;
+import com.cslg.finalab.vo.MemoryVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class MemoryServiceImpl implements MemoryService {
+        public class MemoryServiceImpl implements MemoryService {
 
     @Value("${server_address}")
     private String serverAddress;
@@ -68,5 +67,13 @@ public class MemoryServiceImpl implements MemoryService {
             }
         }
         return map;
+    }
+
+    @Override
+    public void deleteMemoryById(Integer[] memoryIds) {
+        if(memoryIds == null || memoryIds.length == 0) {
+            return;
+        }
+        sysMemoryMapper.batchDeleteByPrimaryKey(memoryIds);
     }
 }

@@ -26,4 +26,6 @@ public interface SysMemoryMapper {
     List<SysMemory> selectAll();
 
     void batchInsert(@Param("list") List<SysMemory> sysMemoryList);
+
+    void batchDeleteByPrimaryKey(@Param("memoryIds") Integer[] memoryIds);
 }

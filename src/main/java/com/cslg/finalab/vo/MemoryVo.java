@@ -1,4 +1,4 @@
-package com.cslg.finalab.vo.memory;
+package com.cslg.finalab.vo;
 
 import lombok.Data;
 

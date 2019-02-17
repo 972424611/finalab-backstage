@@ -94,4 +94,11 @@
     </foreach>
   </insert>
 
+  <delete id="batchDeleteByPrimaryKey" parameterType="Integer">
+    DELETE FROM sys_memory WHERE id IN
+    <foreach collection="memoryIds" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
 </mapper>
