@@ -37,8 +37,8 @@ public class FileServiceImpl implements FileService {
     @Value("${image.address}")
     private String imageAddress;
 
-    @Value("${image.dataBase.address}")
-    private String imageDataBaseAddress;
+    @Value("${image.database.address}")
+    private String imageDatabaseAddress;
 
     private final SysProjectMapper sysProjectMapper;
 
@@ -73,8 +73,8 @@ public class FileServiceImpl implements FileService {
                 projectId + File.separator + "coverImage" + format;
         String pathName = imageAddress + addressSuffix;
         FileOperation.writeToFile(pathName, multipartFile);
-        String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
-        sysProjectMapper.updateCoverImageByPrimaryKey(imageDataBasePathName, projectId);
+        String imageDatabasePathName = imageDatabaseAddress + addressSuffix;
+        sysProjectMapper.updateCoverImageByPrimaryKey(imageDatabasePathName, projectId);
     }
 
     @Override
@@ -95,8 +95,8 @@ public class FileServiceImpl implements FileService {
                     projectId + File.separator + "image" + (i + 1) + format;
             String pathName = imageAddress +addressSuffix;
             pathNameList.add(pathName);
-            String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
-            paths.append(imageDataBasePathName);
+            String imageDatabasePathName = imageDatabaseAddress + addressSuffix;
+            paths.append(imageDatabasePathName);
             if(i != multipartFiles.length - 1) {
                 paths.append(",");
             }
@@ -123,8 +123,8 @@ public class FileServiceImpl implements FileService {
                 sysMember.getStuId() + format;
         String pathName = imageAddress + addressSuffix;
         FileOperation.writeToFile(pathName, multipartFile);
-        String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
-        sysMemberMapper.updateHeadPortraitByPrimaryKey(imageDataBasePathName, memberId);
+        String imageDatabasePathName = imageDatabaseAddress + addressSuffix;
+        sysMemberMapper.updateHeadPortraitByPrimaryKey(imageDatabasePathName, memberId);
     }
 
     @Override
@@ -154,8 +154,8 @@ public class FileServiceImpl implements FileService {
             String pathName = imageAddress + addressSuffix;
             pathNameList.add(pathName);
             sysMemory.setRemark(remark);
-            String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
-            sysMemory.setPhoto(imageDataBasePathName);
+            String imageDatabasePathName = imageDatabaseAddress + addressSuffix;
+            sysMemory.setPhoto(imageDatabasePathName);
             sysMemory.setTime(new Date());
             sysMemoryList.add(sysMemory);
         }
@@ -185,8 +185,8 @@ public class FileServiceImpl implements FileService {
         String addressSuffix = "winning" + File.separator + winningId + format;
         String pathName = imageAddress + addressSuffix;
         FileOperation.writeToFile(pathName, multipartFile);
-        String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
-        sysWinningMapper.updateAwardImageByPrimaryKey(imageDataBasePathName, winningId);
+        String imageDatabasePathName = imageDatabaseAddress + addressSuffix;
+        sysWinningMapper.updateAwardImageByPrimaryKey(imageDatabasePathName, winningId);
     }
 
 }
