@@ -53,10 +53,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<CouncilVo> getCouncilList() {
-        List<SysLevel> sysLevelList = sysLevelMapper.selectAll();
+        // TODO; 这里暂时只获取老师和总裁的信息
+        List<SysLevel> sysLevelList = sysLevelMapper.selectLevelLimitGreaterMinister();
         List<CouncilVo> councilVoList = new ArrayList<>();
         for(SysLevel sysLevel : sysLevelList) {
-            // TODO; 这里暂时只获取老师和总裁的信息
             List<SysMember> sysMemberList = sysMemberMapper.selectByLevelId(sysLevel.getId());
             for(SysMember sysMember : sysMemberList) {
                 CouncilVo councilVo = new CouncilVo();

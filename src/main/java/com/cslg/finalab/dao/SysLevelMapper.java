@@ -24,4 +24,9 @@ public interface SysLevelMapper {
     List<SysLevel> selectAll();
 
     SysLevel selectByLevelName(String level);
+
+    /**
+     * 只获取总裁和实验室指导老师的信息
+     */
+    List<SysLevel> selectLevelLimitGreaterMinister();
 }

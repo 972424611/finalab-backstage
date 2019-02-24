@@ -69,4 +69,10 @@
     <include refid="Base_Column_List"/>
     FROM sys_level WHERE name = #{levelName}
   </select>
+
+  <select id="selectLevelLimitGreaterMinister" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM sys_level WHERE id <![CDATA[ > ]]> 5
+  </select>
 </mapper>

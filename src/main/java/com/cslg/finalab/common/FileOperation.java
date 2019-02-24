@@ -26,6 +26,13 @@ public class FileOperation {
         imageFormatSet.add(".png");
     }
 
+    public static String checkFileSeparator(String imageAddress) {
+        if(!"/".equals(File.separator)) {
+            imageAddress = imageAddress.replace("/", File.separator);
+        }
+        return imageAddress;
+    }
+
     public static File createFile(String pathName) {
         File file = new File(pathName);
         if(!file.getParentFile().exists()) {

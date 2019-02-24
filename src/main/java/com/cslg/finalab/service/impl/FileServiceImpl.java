@@ -37,6 +37,9 @@ public class FileServiceImpl implements FileService {
     @Value("${image.address}")
     private String imageAddress;
 
+    @Value("${image.dataBase.address}")
+    private String imageDataBaseAddress;
+
     private final SysProjectMapper sysProjectMapper;
 
     private final SysMemberMapper sysMemberMapper;
@@ -64,11 +67,14 @@ public class FileServiceImpl implements FileService {
         }
         FileOperation.checkImageSize(multipartFile.getSize());
         String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
+        String imageAddress = FileOperation.checkFileSeparator(this.imageAddress);
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + project/ + 100/ + coverImage.jpg
-        String pathName = imageAddress + "project" + File.separator +
+        String addressSuffix = "project" + File.separator +
                 projectId + File.separator + "coverImage" + format;
+        String pathName = imageAddress + addressSuffix;
         FileOperation.writeToFile(pathName, multipartFile);
-        sysProjectMapper.updateCoverImageByPrimaryKey(pathName, projectId);
+        String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
+        sysProjectMapper.updateCoverImageByPrimaryKey(imageDataBasePathName, projectId);
     }
 
     @Override
@@ -83,11 +89,14 @@ public class FileServiceImpl implements FileService {
         for(int i = 0; i < multipartFiles.length; i++) {
             FileOperation.checkImageSize(multipartFiles[i].getSize());
             String format = FileOperation.checkFileNameAndGetFormat(multipartFiles[i].getOriginalFilename());
+            String imageAddress = FileOperation.checkFileSeparator(this.imageAddress);
             // eg: /Users/twilight/IdeaProjects/finalab/image/ + project/ + 100/ + image1.jpg
-            String pathName = imageAddress + "project" + File.separator +
+            String addressSuffix = "project" + File.separator +
                     projectId + File.separator + "image" + (i + 1) + format;
+            String pathName = imageAddress +addressSuffix;
             pathNameList.add(pathName);
-            paths.append(pathName);
+            String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
+            paths.append(imageDataBasePathName);
             if(i != multipartFiles.length - 1) {
                 paths.append(",");
             }
@@ -107,12 +116,15 @@ public class FileServiceImpl implements FileService {
         }
         FileOperation.checkImageSize(multipartFile.getSize());
         String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
+        String imageAddress = FileOperation.checkFileSeparator(this.imageAddress);
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + member/ + 2017/ + 201650080528.jpg
-        String pathName = imageAddress + "member" + File.separator +
+        String addressSuffix = "member" + File.separator +
                 sysMember.getGrade() + File.separator +
                 sysMember.getStuId() + format;
+        String pathName = imageAddress + addressSuffix;
         FileOperation.writeToFile(pathName, multipartFile);
-        sysMemberMapper.updateHeadPortraitByPrimaryKey(pathName, memberId);
+        String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
+        sysMemberMapper.updateHeadPortraitByPrimaryKey(imageDataBasePathName, memberId);
     }
 
     @Override
@@ -135,12 +147,15 @@ public class FileServiceImpl implements FileService {
             String format = FileOperation.checkFileNameAndGetFormat(multipartFile.getOriginalFilename());
             LocalDateTime localDateTime = LocalDateTime.now();
             int year = localDateTime.getYear();
+            String imageAddress = FileOperation.checkFileSeparator(this.imageAddress);
             // eg: /Users/twilight/IdeaProjects/finalab/image/ + memory/ + 2016/ + 凡路年会/ + 1.jpg
-            String pathName = imageAddress + "memory" + File.separator +
+            String addressSuffix = "memory" + File.separator +
                     year + File.separator + remark + File.separator + (i + 1) + format;
+            String pathName = imageAddress + addressSuffix;
             pathNameList.add(pathName);
             sysMemory.setRemark(remark);
-            sysMemory.setPhoto(pathName);
+            String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
+            sysMemory.setPhoto(imageDataBasePathName);
             sysMemory.setTime(new Date());
             sysMemoryList.add(sysMemory);
         }
@@ -166,9 +181,12 @@ public class FileServiceImpl implements FileService {
                 sysWinning.getAwardName() + format;
         */
         // eg: /Users/twilight/IdeaProjects/finalab/image/ + winning/ + winningId.jpg
-        String pathName = imageAddress + "winning" + File.separator + winningId + format;
+        String imageAddress = FileOperation.checkFileSeparator(this.imageAddress);
+        String addressSuffix = "winning" + File.separator + winningId + format;
+        String pathName = imageAddress + addressSuffix;
         FileOperation.writeToFile(pathName, multipartFile);
-        sysWinningMapper.updateAwardImageByPrimaryKey(pathName, winningId);
+        String imageDataBasePathName = imageDataBaseAddress + addressSuffix;
+        sysWinningMapper.updateAwardImageByPrimaryKey(imageDataBasePathName, winningId);
     }
 
 }
